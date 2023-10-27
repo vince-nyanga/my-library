@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyLibrary.Api.Requests.Books;
 
-public sealed record AddBookRequest
+internal sealed record AddBookRequest
 {
     /// <summary>
     /// Required: The book ID.
@@ -17,8 +17,8 @@ public sealed record AddBookRequest
     public string Title { get; init; }
     
     /// <summary>
-    /// The total copies available. Should be between 1 and 1000.
+    /// The number of copies. Should be between 1 and 1000.
     /// </summary>
     [Range(1, 1000)]
-    public ushort TotalCopies { get; init; }
+    public ushort NumberOfCopies { get; init; }
 }

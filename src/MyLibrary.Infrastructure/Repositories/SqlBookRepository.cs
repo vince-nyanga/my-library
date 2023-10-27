@@ -4,7 +4,7 @@ using MyLibrary.Domain.Entities;
 using MyLibrary.Domain.ValueObjects;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
 
-namespace MyLibrary.Infrastructure.Repository;
+namespace MyLibrary.Infrastructure.Repositories;
 
 internal sealed class SqlBookRepository : IBookRepository
 {

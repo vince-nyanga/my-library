@@ -8,7 +8,7 @@ using MyLibrary.Application.Abstractions.Repositories;
 using MyLibrary.Infrastructure.Auth;
 using MyLibrary.Infrastructure.Commands;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
-using MyLibrary.Infrastructure.Repository;
+using MyLibrary.Infrastructure.Repositories;
 
 namespace MyLibrary.Infrastructure;
 

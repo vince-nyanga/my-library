@@ -1,7 +1,7 @@
 using System.Reflection;
 using MyLibrary.Domain.Abstractions;
 
-namespace MyLibrary.Infrastructure.Exception;
+namespace MyLibrary.Infrastructure.Exceptions;
 
 public sealed class CommandHandlerNotDefinedException : MyLibraryException
 {

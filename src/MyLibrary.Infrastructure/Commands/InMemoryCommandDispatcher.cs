@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Application.Abstractions.Commands;
-using MyLibrary.Infrastructure.Exception;
+using MyLibrary.Infrastructure.Exceptions;
 
 namespace MyLibrary.Infrastructure.Commands;
 
