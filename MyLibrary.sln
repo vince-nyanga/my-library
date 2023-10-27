@@ -1,0 +1,88 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CC79B12B-FFF3-4096-A9D7-0A6ED9FB5936}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Api", "src\MyLibrary.Api\MyLibrary.Api.csproj", "{AAFEF826-815E-4F3E-BA53-7DD5CBF3302D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Application", "src\MyLibrary.Application\MyLibrary.Application.csproj", "{B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Domain", "src\MyLibrary.Domain\MyLibrary.Domain.csproj", "{3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Infrastructure", "src\MyLibrary.Infrastructure\MyLibrary.Infrastructure.csproj", "{65086CA4-9371-4275-93B0-E646E4207595}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{E4B04994-6E26-402A-976D-16BF353C7F20}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Api.IntegrationTests", "tests\MyLibrary.Api.IntegrationTests\MyLibrary.Api.IntegrationTests.csproj", "{09CDD64C-AE7B-495D-997D-F91C2BD2B2DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Api.UnitTests", "tests\MyLibrary.Api.UnitTests\MyLibrary.Api.UnitTests.csproj", "{BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Application.UnitTests", "tests\MyLibrary.Application.UnitTests\MyLibrary.Application.UnitTests.csproj", "{B84CEE92-07AA-4465-AF43-9D61370AA823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Domain.UnitTests", "tests\MyLibrary.Domain.UnitTests\MyLibrary.Domain.UnitTests.csproj", "{FDB77FE3-3A33-495C-BD1E-F92680091D07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72E890D6-FC56-43A5-A29E-13D60FD3A6CF}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Packages.props = Directory.Packages.props
+		Directory.Build.props = Directory.Build.props
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAFEF826-815E-4F3E-BA53-7DD5CBF3302D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAFEF826-815E-4F3E-BA53-7DD5CBF3302D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAFEF826-815E-4F3E-BA53-7DD5CBF3302D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAFEF826-815E-4F3E-BA53-7DD5CBF3302D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65086CA4-9371-4275-93B0-E646E4207595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65086CA4-9371-4275-93B0-E646E4207595}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65086CA4-9371-4275-93B0-E646E4207595}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65086CA4-9371-4275-93B0-E646E4207595}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09CDD64C-AE7B-495D-997D-F91C2BD2B2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09CDD64C-AE7B-495D-997D-F91C2BD2B2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09CDD64C-AE7B-495D-997D-F91C2BD2B2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09CDD64C-AE7B-495D-997D-F91C2BD2B2DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B84CEE92-07AA-4465-AF43-9D61370AA823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B84CEE92-07AA-4465-AF43-9D61370AA823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B84CEE92-07AA-4465-AF43-9D61370AA823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B84CEE92-07AA-4465-AF43-9D61370AA823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB77FE3-3A33-495C-BD1E-F92680091D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB77FE3-3A33-495C-BD1E-F92680091D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB77FE3-3A33-495C-BD1E-F92680091D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB77FE3-3A33-495C-BD1E-F92680091D07}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AAFEF826-815E-4F3E-BA53-7DD5CBF3302D} = {CC79B12B-FFF3-4096-A9D7-0A6ED9FB5936}
+		{B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7} = {CC79B12B-FFF3-4096-A9D7-0A6ED9FB5936}
+		{3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7} = {CC79B12B-FFF3-4096-A9D7-0A6ED9FB5936}
+		{65086CA4-9371-4275-93B0-E646E4207595} = {CC79B12B-FFF3-4096-A9D7-0A6ED9FB5936}
+		{09CDD64C-AE7B-495D-997D-F91C2BD2B2DC} = {E4B04994-6E26-402A-976D-16BF353C7F20}
+		{BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259} = {E4B04994-6E26-402A-976D-16BF353C7F20}
+		{B84CEE92-07AA-4465-AF43-9D61370AA823} = {E4B04994-6E26-402A-976D-16BF353C7F20}
+		{FDB77FE3-3A33-495C-BD1E-F92680091D07} = {E4B04994-6E26-402A-976D-16BF353C7F20}
+	EndGlobalSection
+EndGlobal

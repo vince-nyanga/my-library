@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" NoWarn="NU1604" />
+    <PackageReference Include="Swashbuckle.AspNetCore" NoWarn="NU1604" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
+</Project>
