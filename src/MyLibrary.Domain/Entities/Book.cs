@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using MyLibrary.Domain.Abstractions;
 using MyLibrary.Domain.Events;
 using MyLibrary.Domain.Exceptions;
@@ -40,11 +41,8 @@ public sealed class Book : AggregateRoot<BookId>
     public void ExpireReservation(BookReservationId reservationId)
     {
         var reservedCopy = EnsureReservationExists(reservationId);
-
-        var availableCopies = _availableCopies += 1;
-        EnsureAvailableCopiesAreNotMoreThanTotalCopies(availableCopies);
-
-        _availableCopies = availableCopies;
+        
+        _availableCopies = _availableCopies += 1;;
         _reservedCopies.Remove(reservedCopy);
 
         AddEvent(new BookReservationExpired(this, reservedCopy));
@@ -53,11 +51,8 @@ public sealed class Book : AggregateRoot<BookId>
     public void CancelReservation(BookReservationId reservationId)
     {
         var reservedCopy = EnsureReservationExists(reservationId);
-
-        var availableCopies = _availableCopies += 1;
-        EnsureAvailableCopiesAreNotMoreThanTotalCopies(availableCopies);
-
-        _availableCopies = availableCopies;
+        
+        _availableCopies = _availableCopies += 1;;
         _reservedCopies.Remove(reservedCopy);
 
         AddEvent(new BookReservationCancelled(this, reservedCopy));
@@ -93,19 +88,18 @@ public sealed class Book : AggregateRoot<BookId>
         _availableCopies += 1;
         _borrowedCopies.Remove(copy);
 
+        copy.Return();
         AddEvent(new BookCopyReturned(this, copy));
     }
 
     internal ushort GetAvailableCopies()
         => _availableCopies;
 
-    private void EnsureAvailableCopiesAreNotMoreThanTotalCopies(ushort availableCopies)
-    {
-        if (availableCopies > _totalCopies)
-        {
-            throw new AvailableBookCopiesExceedTotalCopiesException(Id);
-        }
-    }
+    internal IReadOnlyCollection<BookCopyReservation> GetReservedCopies()
+        => _reservedCopies.AsReadOnly();
+
+    internal IReadOnlyCollection<BorrowedBookCopy> GetUnreturnedBorrowedCopies()
+        => _borrowedCopies.Where(b => !b.Returned).ToImmutableArray();
 
     private void EnsureAvailableCopies()
     {
