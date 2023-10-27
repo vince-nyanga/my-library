@@ -17,10 +17,10 @@ public class BookTests
         var customer = CreateCustomer();
         
         // Act
-        book.RerseveCopy(customer);
+        book.ReserveCopy(customer);
         
         // Assert
-        book.AvailableCopies.Should().Be(1);
+        book.GetAvailableCopies().Should().Be(1);
         book.Events.FindRaisedEvent<BookReservationMade>().Should().NotBeNull();
     }
 

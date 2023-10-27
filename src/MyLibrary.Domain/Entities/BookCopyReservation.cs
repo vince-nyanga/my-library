@@ -9,13 +9,13 @@ public sealed class BookCopyReservation : Entity<BookReservationId>
     {
     }
     
-    public BookCopyReservation(BookReservationId id, BookId bookId, CustomerId customerId)
+    internal BookCopyReservation(BookReservationId id, BookId bookId, CustomerId customerId)
     {
         Id = id;
         BookId = bookId;
         CustomerId = customerId;
     }
     
-    public BookId BookId { get; private set; }
-    public CustomerId CustomerId { get; private set; }
+    public BookId BookId { get; init; }
+    public CustomerId CustomerId { get; init; }
 }

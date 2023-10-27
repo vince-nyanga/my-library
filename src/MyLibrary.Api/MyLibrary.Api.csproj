@@ -2,11 +2,15 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" NoWarn="NU1604" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" NoWarn="NU1604" />
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\MyLibrary.Infrastructure\MyLibrary.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

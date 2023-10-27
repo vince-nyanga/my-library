@@ -7,6 +7,9 @@ namespace MyLibrary.Domain.Entities;
 
 public sealed class Book : AggregateRoot<BookId>
 {
+    private BookTitle _title;
+    private ushort _availableCopies;
+    private ushort _totalCopies;
     private List<BorrowedBookCopy> _borrowedCopies = new();
     private List<BookCopyReservation> _reservedCopies = new();
 
@@ -17,26 +20,16 @@ public sealed class Book : AggregateRoot<BookId>
     public Book(BookId id, BookTitle title, ushort totalCopies)
     {
         Id = id;
-        Title = title;
-        TotalCopies = totalCopies;
-        AvailableCopies = totalCopies;
+        _title = title;
+        _totalCopies = totalCopies;
+        _availableCopies = totalCopies;
     }
-
-    public BookTitle Title { get; private set; }
-
-    public ushort AvailableCopies { get; private set; }
-
-    public ushort TotalCopies { get; private set; }
-
-    public IReadOnlyCollection<BorrowedBookCopy> BorrowedCopies => _borrowedCopies.AsReadOnly();
-
-    public IReadOnlyCollection<BookCopyReservation> ReservedCopies => _reservedCopies.AsReadOnly();
-
-    public void RerseveCopy(Customer customer)
+    
+    public void ReserveCopy(Customer customer)
     {
         EnsureAvailableCopies();
 
-        AvailableCopies -= 1;
+        _availableCopies -= 1;
 
         var reservation = new BookCopyReservation(Guid.NewGuid(), Id, customer.Id);
         _reservedCopies.Add(reservation);
@@ -48,10 +41,10 @@ public sealed class Book : AggregateRoot<BookId>
     {
         var reservedCopy = EnsureReservationExists(reservationId);
 
-        var availableCopies = AvailableCopies += 1;
+        var availableCopies = _availableCopies += 1;
         EnsureAvailableCopiesAreNotMoreThanTotalCopies(availableCopies);
 
-        AvailableCopies = availableCopies;
+        _availableCopies = availableCopies;
         _reservedCopies.Remove(reservedCopy);
 
         AddEvent(new BookReservationExpired(this, reservedCopy));
@@ -61,10 +54,10 @@ public sealed class Book : AggregateRoot<BookId>
     {
         var reservedCopy = EnsureReservationExists(reservationId);
 
-        var availableCopies = AvailableCopies += 1;
+        var availableCopies = _availableCopies += 1;
         EnsureAvailableCopiesAreNotMoreThanTotalCopies(availableCopies);
 
-        AvailableCopies = availableCopies;
+        _availableCopies = availableCopies;
         _reservedCopies.Remove(reservedCopy);
 
         AddEvent(new BookReservationCancelled(this, reservedCopy));
@@ -75,7 +68,7 @@ public sealed class Book : AggregateRoot<BookId>
         EnsureAvailableCopies();
         EnsureDueDateNotInThePast(dueDate);
 
-        AvailableCopies -= 1;
+        _availableCopies -= 1;
         var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), customer.Id, Id, dueDate);
         _borrowedCopies.Add(borrowedBookCopy);
 
@@ -97,15 +90,18 @@ public sealed class Book : AggregateRoot<BookId>
     {
         var copy = EnsureBorrowedCopyExists(borrowedBookId);
 
-        AvailableCopies += 1;
+        _availableCopies += 1;
         _borrowedCopies.Remove(copy);
 
         AddEvent(new BookCopyReturned(this, copy));
     }
 
+    internal ushort GetAvailableCopies()
+        => _availableCopies;
+
     private void EnsureAvailableCopiesAreNotMoreThanTotalCopies(ushort availableCopies)
     {
-        if (availableCopies > TotalCopies)
+        if (availableCopies > _totalCopies)
         {
             throw new AvailableBookCopiesExceedTotalCopiesException(Id);
         }
@@ -113,7 +109,7 @@ public sealed class Book : AggregateRoot<BookId>
 
     private void EnsureAvailableCopies()
     {
-        if (AvailableCopies == 0)
+        if (_availableCopies == 0)
         {
             throw new BookCopiesUnavailableException(Id);
         }
