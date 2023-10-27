@@ -1,10 +1,11 @@
-using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Application;
+using MyLibrary.Application.Abstractions.Auth;
 using MyLibrary.Application.Abstractions.Commands;
 using MyLibrary.Application.Abstractions.Repositories;
+using MyLibrary.Infrastructure.Auth;
 using MyLibrary.Infrastructure.Commands;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
 using MyLibrary.Infrastructure.Repository;
@@ -20,6 +21,8 @@ public static class ServiceCollectionExtensions
         services.AddApplication();
         AddCommands(services);
         AddRepositories(services);
+        AddAuth(services);
+        
         EnsureDatabaseCreated(services);
         return services;
     }
@@ -32,6 +35,12 @@ public static class ServiceCollectionExtensions
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IBookRepository, SqlBookRepository>();
+    }
+
+    private static void AddAuth(IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserContextProvider, HttpUserContextProvider>();
     }
 
     /// <summary>
