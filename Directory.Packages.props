@@ -2,12 +2,11 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
-  
   <ItemGroup Label="Main packages">
+    <PackageVersion Include="Meziantou.Xunit.ParallelTestFramework" Version="2.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
-  
   <ItemGroup Label="Test packages">
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
