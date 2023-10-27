@@ -3,4 +3,4 @@ using MyLibrary.Domain.Entities;
 
 namespace MyLibrary.Domain.Events;
 
-public sealed record BookReservationMade(Book Book, Customer Customer) : IDomainEvent;
+public sealed record BookReservationCancelled(Book Book, BookCopyReservation Reservation) : IDomainEvent;

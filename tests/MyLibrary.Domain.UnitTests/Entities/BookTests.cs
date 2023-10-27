@@ -17,7 +17,7 @@ public class BookTests
         var customer = CreateCustomer();
         
         // Act
-        book.Rerseve(customer);
+        book.RerseveCopy(customer);
         
         // Assert
         book.AvailableCopies.Should().Be(1);
