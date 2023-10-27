@@ -5,11 +5,11 @@ using MyLibrary.Query.Models;
 
 namespace MyLibrary.Infrastructure.Queries;
 
-internal sealed class SqlBookQuery : IBookQuery
+internal sealed class SqlBookQueryService : IBookQueryService
 {
     private readonly ReadDbContext _context;
 
-    public SqlBookQuery(ReadDbContext context)
+    public SqlBookQueryService(ReadDbContext context)
     {
         _context = context;
     }

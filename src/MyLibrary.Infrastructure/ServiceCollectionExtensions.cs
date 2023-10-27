@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
             .AddApplication()
             .AddScoped<IBookRepository, SqlBookRepository>()
             .AddSingleton<IQueryDispatcher, InMemoryQueryDispatcher>()
-            .AddScoped<IBookQuery, SqlBookQuery>()
+            .AddScoped<IBookQueryService, SqlBookQueryService>()
             .AddQueries();
 
         EnsureDatabaseCreated(services);
