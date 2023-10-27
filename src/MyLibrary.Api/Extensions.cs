@@ -1,6 +1,9 @@
 using System.Reflection;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
+using MyLibrary.Api.Auth;
+using MyLibrary.Application.Abstractions.Auth;
 using MyLibrary.Application.Exceptions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using ProblemDetailsOptions = Hellang.Middleware.ProblemDetails.ProblemDetailsOptions;
@@ -15,6 +18,23 @@ internal static class Extensions
         return services;
     }
 
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHttpContextAccessor()
+            .AddScoped<IUserContextProvider, HttpUserContextProvider>()
+            .AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = configuration["Authentication:Domain"];
+                options.Audience = configuration["Authentication:Audience"];
+            });
+
+        return services;
+    }
+
     public static IServiceCollection AddSwagger(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSwaggerGen(options =>
@@ -25,7 +45,7 @@ internal static class Extensions
                 Version = "v1",
                 Description = "REST API for My Library"
             });
-    
+
             options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
             {
                 Name = "Authorization",
@@ -39,11 +59,12 @@ internal static class Extensions
                         {
                             { "openid", "Open Id" }
                         },
-                        AuthorizationUrl = new Uri(configuration["Authentication:Domain"] + "authorize?audience=" + configuration["Authentication:Audience"])
+                        AuthorizationUrl = new Uri(configuration["Authentication:Domain"] + "authorize?audience=" +
+                                                   configuration["Authentication:Audience"])
                     }
                 }
             });
-    
+
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 {
@@ -55,16 +76,16 @@ internal static class Extensions
                             Id = "oauth2"
                         }
                     },
-                    new []{"openid"}
+                    new[] { "openid" }
                 }
             });
-            
+
             options.IncludeXmlCommentsIfExists();
         });
 
         return services;
     }
-    
+
     private static void ConfigureProblemDetails(ProblemDetailsOptions options)
     {
         options.IncludeExceptionDetails = (_, _) => false;

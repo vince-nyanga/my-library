@@ -1,9 +1,8 @@
 using System.Collections.Immutable;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 using MyLibrary.Application.Abstractions.Auth;
 
-namespace MyLibrary.Infrastructure.Auth;
+namespace MyLibrary.Api.Auth;
 
 internal sealed class HttpUserContextProvider : IUserContextProvider
 {

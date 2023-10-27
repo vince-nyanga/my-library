@@ -5,7 +5,6 @@ using MyLibrary.Application;
 using MyLibrary.Application.Abstractions.Auth;
 using MyLibrary.Application.Abstractions.Commands;
 using MyLibrary.Application.Abstractions.Repositories;
-using MyLibrary.Infrastructure.Auth;
 using MyLibrary.Infrastructure.Commands;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
 using MyLibrary.Infrastructure.Repositories;
@@ -21,7 +20,6 @@ public static class ServiceCollectionExtensions
         services.AddApplication();
         AddCommands(services);
         AddRepositories(services);
-        AddAuth(services);
         
         EnsureDatabaseCreated(services);
         return services;
@@ -36,13 +34,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<IBookRepository, SqlBookRepository>();
     }
-
-    private static void AddAuth(IServiceCollection services)
-    {
-        services.AddHttpContextAccessor();
-        services.AddScoped<IUserContextProvider, HttpUserContextProvider>();
-    }
-
+    
     /// <summary>
     /// WARNING: Do not do this in a production application. Use migrations instead.
     /// </summary>

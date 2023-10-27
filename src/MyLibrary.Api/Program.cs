@@ -6,28 +6,19 @@ using MyLibrary.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers()
     .ConfigureApplicationPartManager(manager =>
     {
         manager.FeatureProviders.Add(new InternalControllerFeatureProvider());
     });
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddProblemDetailsConfiguration();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwagger(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration)
+    .AddProblemDetailsConfiguration()
+    .AddEndpointsApiExplorer()
+    .AddSwagger(builder.Configuration)
+    .AddAuth(builder.Configuration);
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.Authority = builder.Configuration["Authentication:Domain"];
-    options.Audience = builder.Configuration["Authentication:Audience"];
-});
+
 
 var app = builder.Build();
 
