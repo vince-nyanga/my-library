@@ -4,5 +4,5 @@ namespace MyLibrary.Query;
 
 public interface IBookQueryService
 {
-    ValueTask<IEnumerable<BookReadModel>> GetAllAsync();
+    ValueTask<IReadOnlyCollection<BookReadModel>> GetAllAsync();
 }

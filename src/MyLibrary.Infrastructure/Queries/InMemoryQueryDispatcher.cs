@@ -16,16 +16,18 @@ internal sealed class InMemoryQueryDispatcher : IQueryDispatcher
         _serviceProvider = serviceProvider;
     }
 
-    public async ValueTask<TQueryResult> DispatchAsync<TQuery, TQueryResult>(TQuery query) where TQuery : IQuery<TQueryResult>
+    public async ValueTask<TQueryResult> DispatchAsync<TQueryResult>(IQuery<TQueryResult> query)
     {
         using var serviceScope = _serviceProvider.CreateScope();
-        var queryHandler = serviceScope.ServiceProvider.GetService<IQueryHandler<TQuery, TQueryResult>>();
+        var handlerType = typeof(IQueryHandler<,>).MakeGenericType(query.GetType(), typeof(TQueryResult));
+        var queryHandler = serviceScope.ServiceProvider.GetRequiredService(handlerType);
 
         if (queryHandler is null)
         {
-            throw new QueryHandlerNotDefinedException(typeof(TQuery));
+            throw new QueryHandlerNotDefinedException(query.GetType());
         }
 
-        return await queryHandler.HandleAsync(query);
+        return await (ValueTask<TQueryResult>) handlerType.GetMethod(nameof(IQueryHandler<IQuery<TQueryResult>, TQueryResult>.HandleAsync))?
+            .Invoke(queryHandler, new[] {query});
     }
 }

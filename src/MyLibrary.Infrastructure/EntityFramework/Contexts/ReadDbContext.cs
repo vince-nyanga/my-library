@@ -9,7 +9,7 @@ internal sealed class ReadDbContext : DbContext
     public DbSet<BookReadModel> Books { get; set; }
     public DbSet<CustomerReadModel> Customers { get; set; }
 
-    public ReadDbContext(DbContextOptions<WriteDbContext> options)
+    public ReadDbContext(DbContextOptions<ReadDbContext> options)
         : base(options)
     {
     }
