@@ -27,9 +27,9 @@ public class BorrowedBookIdTests
         var value = Guid.NewGuid();
         
         // Act
-        var bookId = new BorrowedBookId(value);
+        var borrowedBookId = new BorrowedBookId(value);
         
         // Assert
-        bookId.Value.Should().Be(value);
+        borrowedBookId.Value.Should().Be(value);
     }
 }

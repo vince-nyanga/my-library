@@ -28,51 +28,9 @@ public class CustomerNameTests
         var value = new MnemonicString().GetValue();
         
         // Act
-        var bookId = new CustomerName(value);
+        var customerName = new CustomerName(value);
         
         // Assert
-        bookId.Value.Should().Be(value);
-    }
-}
-
-public class EmailAddressTests
-{
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    public void GivenEmptyValue_ItShouldThrowEmptyEmailAddressException(string value)
-    {
-        // Act
-        var act = () => new EmailAddress(value);
-        
-        // Assert
-        act.Should().Throw<EmptyEmailAddressException>();
-    }
-    
-    [Theory]
-    [InlineData("t")]
-    [InlineData("t@")]
-    [InlineData("@.com")]
-    public void GivenInvalidValue_ItShouldThrowInvalidEmailAddressException(string value)
-    {
-        // Act
-        var act = () => new EmailAddress(value);
-        
-        // Assert
-        act.Should().Throw<InvalidEmailAddressException>();
-    }
-
-    [Fact]
-    public void GivenValidValue_ItShouldCreateEmailAddress()
-    {
-        // Arrange
-        var value = new EmailAddresses().GetValue();
-        
-        // Act
-        var bookId = new EmailAddress(value);
-        
-        // Assert
-        bookId.Value.Should().Be(value);
+        customerName.Value.Should().Be(value);
     }
 }

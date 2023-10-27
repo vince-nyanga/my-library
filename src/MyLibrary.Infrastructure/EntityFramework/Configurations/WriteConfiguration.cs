@@ -6,8 +6,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Infrastructure.EntityFramework.Configurations;
 
-internal sealed class WriteConfiguration 
-    : IEntityTypeConfiguration<Book>, IEntityTypeConfiguration<BookCopyReservation>, 
+internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEntityTypeConfiguration<BookCopyReservation>, 
         IEntityTypeConfiguration<BorrowedBookCopy>, IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Book> builder)

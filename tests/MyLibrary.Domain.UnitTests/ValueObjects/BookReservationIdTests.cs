@@ -27,9 +27,9 @@ public class BookReservationIdTests
         var value = Guid.NewGuid();
         
         // Act
-        var bookId = new BookReservationId(value);
+        var bookReservationId = new BookReservationId(value);
         
         // Assert
-        bookId.Value.Should().Be(value);
+        bookReservationId.Value.Should().Be(value);
     }
 }

@@ -1,18 +1,19 @@
 using FluentAssertions;
 using MyLibrary.Domain.Exceptions;
 using MyLibrary.Domain.ValueObjects;
+using Tynamix.ObjectFiller;
 using Xunit;
 
 namespace MyLibrary.Domain.UnitTests.ValueObjects;
 
 public class CustomerIdTests
 {
-    [Fact]
-    public void GivenEmptyValue_ItShouldThrowEmptyCustomerIdException()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void GivenEmptyValue_ItShouldThrowEmptyCustomerIdException(string value)
     {
-        // Arrange
-        var value = Guid.Empty;
-        
         // Act
         var act = () => new CustomerId(value);
         
@@ -24,12 +25,12 @@ public class CustomerIdTests
     public void GivenValidValue_ItShouldCreateCustomerId()
     {
         // Arrange
-        var value = Guid.NewGuid();
+        var value = new MnemonicString().GetValue();
         
         // Act
-        var bookId = new CustomerId(value);
+        var customerId = new CustomerId(value);
         
         // Assert
-        bookId.Value.Should().Be(value);
+        customerId.Value.Should().Be(value);
     }
 }

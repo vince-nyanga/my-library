@@ -4,20 +4,20 @@ namespace MyLibrary.Domain.ValueObjects;
 
 public sealed record CustomerId
 {
-    public CustomerId(Guid value)
+    public CustomerId(string value)
     {
-        if (value == Guid.Empty)
+        if (string.IsNullOrWhiteSpace(value))
         {
             throw new EmptyCustomerIdException();
         }
         Value = value;
     }
 
-    public Guid Value { get; }
+    public string Value { get; }
 
-    public static implicit operator Guid(CustomerId customerId)
+    public static implicit operator string(CustomerId customerId)
         => customerId.Value;
 
-    public static implicit operator CustomerId(Guid value)
+    public static implicit operator CustomerId(string value)
         => new(value);
 }

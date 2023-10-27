@@ -227,5 +227,5 @@ public class BookTests
         => new(Guid.NewGuid(), new MnemonicString().GetValue(), availableCopies);
 
     private static Customer CreateCustomer()
-        => new(Guid.NewGuid(), new RealNames().GetValue(), new EmailAddresses().GetValue());
+        => new(new MnemonicString().GetValue(), new RealNames().GetValue(), new EmailAddresses().GetValue());
 }

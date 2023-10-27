@@ -19,12 +19,10 @@ public sealed class BorrowedBookCopy : Entity<BorrowedBookId>
         Returned = false;
     }
     
-    public CustomerId CustomerId { get; private set; }
-    public BookId BookId { get; private set; }
-    public DateOnly DueDate { get; private set; }
-    
+    public CustomerId CustomerId { get; init; }
+    public BookId BookId { get; init; }
+    public DateOnly DueDate { get; init; }
     public bool Returned { get; private set; }
-    
     public DateOnly? DateReturned { get; private set; }
 
     public void Return()

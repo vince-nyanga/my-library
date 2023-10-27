@@ -27,7 +27,7 @@ internal sealed class AddBookController : ControllerBase
     ///     POST
     ///     {
     ///         "id": "9D38EB55-BA24-4A88-AE50-EC19D08F2663",
-    ///         "title": "My Wonderful Book",
+    ///         "title": "My Wonderful BookReadModel",
     ///         "numberOfCopies": 4
     ///     }
     /// </remarks>

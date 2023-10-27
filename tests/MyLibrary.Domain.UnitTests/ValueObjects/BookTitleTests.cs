@@ -28,9 +28,9 @@ public class BookTitleTests
         var value = new MnemonicString().GetValue();
         
         // Act
-        var bookId = new BookTitle(value);
+        var bookTitle = new BookTitle(value);
         
         // Assert
-        bookId.Value.Should().Be(value);
+        bookTitle.Value.Should().Be(value);
     }
 }
