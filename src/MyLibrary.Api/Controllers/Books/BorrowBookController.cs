@@ -13,9 +13,7 @@ internal sealed class BorrowBookController : ControllerBase
     private readonly ICommandDispatcher _commandDispatcher;
 
     public BorrowBookController(ICommandDispatcher commandDispatcher)
-    {
-        _commandDispatcher = commandDispatcher;
-    }
+        => _commandDispatcher = commandDispatcher;
 
     /// <summary>
     /// Borrows a book for the logged in user.

@@ -14,9 +14,7 @@ internal sealed class SearchBooksController : ControllerBase
     private readonly IQueryDispatcher _queryDispatcher;
 
     public SearchBooksController(IQueryDispatcher queryDispatcher)
-    {
-        _queryDispatcher = queryDispatcher;
-    }
+        => _queryDispatcher = queryDispatcher;
 
     /// <summary>
     /// Searches for books by title.

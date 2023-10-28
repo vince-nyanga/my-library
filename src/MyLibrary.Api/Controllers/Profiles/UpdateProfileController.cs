@@ -13,9 +13,7 @@ internal sealed class UpdateProfileController : ControllerBase
     private readonly ICommandDispatcher _commandDispatcher;
 
     public UpdateProfileController(ICommandDispatcher commandDispatcher)
-    {
-        _commandDispatcher = commandDispatcher;
-    }
+        => _commandDispatcher = commandDispatcher;
 
     /// <summary>
     /// Updates the logged in user's profile.

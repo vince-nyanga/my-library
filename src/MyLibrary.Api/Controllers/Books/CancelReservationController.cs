@@ -12,9 +12,7 @@ internal sealed class CancelReservationController : ControllerBase
     private readonly ICommandDispatcher _commandDispatcher;
 
     public CancelReservationController(ICommandDispatcher commandDispatcher)
-    {
-        _commandDispatcher = commandDispatcher;
-    }
+        => _commandDispatcher = commandDispatcher;
 
     /// <summary>
     /// Cancels the logged in user's reservation.

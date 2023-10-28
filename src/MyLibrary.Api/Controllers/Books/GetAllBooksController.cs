@@ -14,9 +14,7 @@ internal sealed class GetAllBooksController : ControllerBase
     private readonly IQueryDispatcher _queryDispatcher;
 
     public GetAllBooksController(IQueryDispatcher queryDispatcher)
-    {
-        _queryDispatcher = queryDispatcher;
-    }
+        => _queryDispatcher = queryDispatcher;
 
     /// <summary>
     /// Gets all books in the library.

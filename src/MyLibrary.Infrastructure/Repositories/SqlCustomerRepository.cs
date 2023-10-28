@@ -11,9 +11,7 @@ internal sealed class SqlCustomerRepository : ICustomerRepository
     private readonly WriteDbContext _context;
 
     public SqlCustomerRepository(WriteDbContext context)
-    {
-        _context = context;
-    }
+        => _context = context;
 
     public async ValueTask<Customer> GetAsync(CustomerId id)
     {

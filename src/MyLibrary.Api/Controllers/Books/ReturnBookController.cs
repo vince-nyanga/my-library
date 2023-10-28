@@ -12,9 +12,7 @@ internal sealed class ReturnBookController : ControllerBase
     private readonly ICommandDispatcher _commandDispatcher;
 
     public ReturnBookController(ICommandDispatcher commandDispatcher)
-    {
-        _commandDispatcher = commandDispatcher;
-    }
+        => _commandDispatcher = commandDispatcher;
 
     /// <summary>
     /// Returns a book borrowed by the logged in user to the library

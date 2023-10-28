@@ -10,9 +10,7 @@ internal sealed class SqlBookQueryService : IBookQueryService
     private readonly ReadDbContext _context;
 
     public SqlBookQueryService(ReadDbContext context)
-    {
-        _context = context;
-    }
+        => _context = context;
 
     public async ValueTask<IReadOnlyCollection<BookReadModel>> GetAllAsync()
     {

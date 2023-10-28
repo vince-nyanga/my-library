@@ -1,6 +1,28 @@
 # My Library
 
-An API for managing a library.
+An API for managing a library. It provides the following functionality:
+
+- **Books**
+
+  - Add books (for users with the right permissions).
+  - List books.
+  - Search for books by title.
+  - Borrow books.
+  - Return books.
+  - Reserve a book for 24 hours. If user doesn't borrow the book within the time, the reservation will automatically expire.
+  - Cancel reservation
+  - List borrowed books.
+  - List reserved books.
+
+- **Profile**
+
+  - Add/update logged in user's profile.
+  - Get logged in user's profile.
+
+- **Notifications**
+  - List all unread notifications.
+  - Mark a notification as read.
+  - Mark all notifications as read.
 
 ## Running The Project
 
@@ -36,6 +58,9 @@ docker compose up
 - Ensure you sign in by clicking on the _Authorize_ button on the top right of the screen.
 - Before you do any thing, update your profile because most of the functionality depends on the availability of a user profile for the logged in user. User the `Profile` section, use the `POST` endpoint to add your profile details. Once done, you may test all the endpoints.
 
+> [!WARNING]
+> If your don't update/add your profile most endpoints will fail.
+
 ## Architecture And Design
 
 The system is built using a combination of Clean Architecture, Command Query Responsibility Segregation (CQRS) and Domain Driven Design (DDD). Below is a diagram showing the the system design overview.
@@ -57,3 +82,9 @@ The project uses [channels](https://learn.microsoft.com/en-us/dotnet/core/extens
 ## Scheduled Tasks
 
 The project uses [Coravel](https://docs.coravel.net/) to schedule a background job that cleans up expired book reservations.
+
+## Things To Do
+
+- Add more tests to all layers
+- Add more features
+- Clean up a few things

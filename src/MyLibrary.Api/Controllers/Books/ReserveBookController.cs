@@ -12,9 +12,7 @@ internal sealed class ReserveBookController : ControllerBase
     private readonly ICommandDispatcher _commandDispatcher;
 
     public ReserveBookController(ICommandDispatcher commandDispatcher)
-    {
-        _commandDispatcher = commandDispatcher;
-    }
+        => _commandDispatcher = commandDispatcher;
 
     /// <summary>
     /// Reserves a book for the logged in user.

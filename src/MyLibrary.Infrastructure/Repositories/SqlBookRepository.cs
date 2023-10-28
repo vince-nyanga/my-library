@@ -11,9 +11,7 @@ internal sealed class SqlBookRepository : IBookRepository
     private readonly WriteDbContext _context;
 
     public SqlBookRepository(WriteDbContext context)
-    {
-        _context = context;
-    }
+        => _context = context;
 
     public async ValueTask AddAsync(Book book)
     {

@@ -13,9 +13,7 @@ internal sealed class AddBookController : ControllerBase
     private readonly ICommandDispatcher _commandDispatcher;
 
     public AddBookController(ICommandDispatcher commandDispatcher)
-    {
-        _commandDispatcher = commandDispatcher;
-    }
+        => _commandDispatcher = commandDispatcher;
 
     /// <summary>
     /// Adds a new book to the library.
