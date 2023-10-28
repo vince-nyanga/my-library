@@ -34,7 +34,6 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICustomerRepository, SqlCustomerRepository>()
             .AddScoped<IBookQueryService, SqlBookQueryService>()
             .AddScoped<ICustomerQueryService, SqlCustomerQueryService>()
-            .AddScoped<IReservedBookRepository, SqlReservedBookRepository>()
             .AddScoped<IWatchedBookRepository, SqlWatchedBookRepository>()
             .AddApplication()
             .AddQueries();

@@ -16,11 +16,13 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel
         builder.HasKey(b => b.Id);
         builder.HasMany(b => b.BorrowedCopies)
             .WithOne(b => b.Book)
-            .HasForeignKey(b => b.BookId);
+            .HasForeignKey(b => b.BookId)
+            .IsRequired();
         
         builder.HasMany(b => b.ReservedCopies)
             .WithOne(b => b.Book)
-            .HasForeignKey(r => r.BookId);
+            .HasForeignKey(r => r.BookId)
+            .IsRequired();
 
         builder.ToTable("Books");
     }
@@ -46,7 +48,8 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel
 
         builder.HasMany(c => c.WatchedBooks)
             .WithOne()
-            .HasForeignKey(w => w.CustomerId);
+            .HasForeignKey(w => w.CustomerId)
+            .IsRequired();
         
         builder.ToTable("Customers");
     }

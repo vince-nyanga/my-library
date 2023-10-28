@@ -23,11 +23,13 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
     
         builder.HasMany(b => b.BorrowedCopies)
             .WithOne()
-            .HasForeignKey(b => b.BookId);
+            .HasForeignKey(b => b.BookId)
+            .IsRequired();
         
         builder.HasMany(b => b.ReservedCopies)
-            .WithOne(r => r.Book)
-            .HasForeignKey(r => r.BookId);
+            .WithOne()
+            .HasForeignKey(r => r.BookId)
+            .IsRequired();
 
         builder.Ignore(b => b.CopiesNotReturned);
 

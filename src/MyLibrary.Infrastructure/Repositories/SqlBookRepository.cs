@@ -40,7 +40,7 @@ internal sealed class SqlBookRepository : IBookRepository
         return await _context.Books
             .Distinct()
             .Include(b => b.ReservedCopies)
-            .Where(b => b.ReservedCopies.Select(c => c.ExpiryDate <= DateTime.UtcNow).Any())
+            .Where(b => b.ReservedCopies.Select(c => c.ExpiryDate < DateTime.UtcNow).Any())
             .ToListAsync();
     }
 

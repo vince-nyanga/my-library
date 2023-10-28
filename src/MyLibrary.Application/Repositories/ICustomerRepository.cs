@@ -11,8 +11,3 @@ internal interface ICustomerRepository
     ValueTask<IReadOnlyCollection<Customer>> GetWithWatchedBooksAsync(BookId bookId);
     ValueTask UpdateManyAsync(List<Customer> customers);
 }
-
-internal interface IReservedBookRepository
-{
-    ValueTask<IReadOnlyCollection<ReservedBookCopy>> GetExpiredAsync();
-}
