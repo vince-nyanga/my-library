@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyLibrary.Query.Abstractions;
 using MyLibrary.Query.Books;
 using MyLibrary.Query.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MyLibrary.Api.Controllers.Books;
 
@@ -21,6 +22,7 @@ internal sealed class GetAllBooksController : ControllerBase
     /// </summary>
     [HttpGet(Name = nameof(GetAllBooksAsync))]
     [ProducesResponseType(typeof(BookReadModel), StatusCodes.Status200OK)]
+    [SwaggerOperation(Tags = new[] { "Books" })]
     public async Task<IActionResult> GetAllBooksAsync()
     {
         var books = await _queryDispatcher.DispatchAsync(new GetAllBooks());

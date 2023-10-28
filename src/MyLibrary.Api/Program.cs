@@ -31,6 +31,8 @@ if (app.Environment.IsDevelopment())
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "API");
         options.OAuthClientId(builder.Configuration["Authentication:ClientId"]);
+        options.DisplayOperationId();
+        options.DisplayRequestDuration();
     });
 }
 

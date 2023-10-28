@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyLibrary.Api.Requests.Books;
 using MyLibrary.Application.Abstractions.Commands;
 using MyLibrary.Application.Commands.Books;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace MyLibrary.Api.Controllers.Books;
 
@@ -35,6 +36,7 @@ internal sealed class AddBookController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [SwaggerOperation(Tags = new[] { "Books" })]
     public async Task<IActionResult> AddBookAsync([FromBody] AddBookRequest request)
     {
         await _commandDispatcher.SendAsync(new AddBook(request.Id, request.Title, request.NumberOfCopies));

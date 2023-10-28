@@ -81,6 +81,7 @@ internal static class Extensions
             });
 
             options.IncludeXmlCommentsIfExists();
+            options.EnableAnnotations();
         });
 
         return services;
