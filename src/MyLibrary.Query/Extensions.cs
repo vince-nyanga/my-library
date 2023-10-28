@@ -6,7 +6,7 @@ namespace MyLibrary.Query;
 
 public static class Extensions
 {
-    public static IServiceCollection AddQueries(this IServiceCollection services)
+    internal static IServiceCollection AddQueries(this IServiceCollection services)
     {
         services.Scan(s => s.FromAssemblyOf<GetAllBooks>()
             .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)), publicOnly: false)

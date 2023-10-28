@@ -5,7 +5,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-public sealed class Customer : AggregateRoot<CustomerId>
+internal sealed class Customer : AggregateRoot<CustomerId>
 {
     private readonly List<Notification> _notifications = new();
     

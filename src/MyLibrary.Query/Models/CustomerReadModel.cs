@@ -1,6 +1,6 @@
 namespace MyLibrary.Query.Models;
 
-public sealed class CustomerReadModel
+internal sealed class CustomerReadModel
 {
     public string Id { get; init; }
     public string Name { get; init; }

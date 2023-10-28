@@ -4,7 +4,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-public sealed class BorrowedBookCopy : Entity<BorrowedBookId>
+internal sealed class BorrowedBookCopy : Entity<BorrowedBookId>
 {
     
     private BorrowedBookCopy()

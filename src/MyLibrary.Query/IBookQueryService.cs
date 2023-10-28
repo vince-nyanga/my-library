@@ -2,7 +2,7 @@ using MyLibrary.Query.Models;
 
 namespace MyLibrary.Query;
 
-public interface IBookQueryService
+internal interface IBookQueryService
 {
     ValueTask<IReadOnlyCollection<BookReadModel>> GetAllAsync();
 }

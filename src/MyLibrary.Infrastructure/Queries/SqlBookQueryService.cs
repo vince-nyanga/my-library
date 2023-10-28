@@ -16,6 +16,8 @@ internal sealed class SqlBookQueryService : IBookQueryService
 
     public async ValueTask<IReadOnlyCollection<BookReadModel>>GetAllAsync()
     {
-        return await _context.Books.ToListAsync();
+        return await _context.Books
+            .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
+            .ToListAsync();
     }
 }

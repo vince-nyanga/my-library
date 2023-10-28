@@ -6,7 +6,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-public sealed class Book : AggregateRoot<BookId>
+internal sealed class Book : AggregateRoot<BookId>
 {
     private readonly List<BorrowedBookCopy> _borrowedCopies = new();
     private readonly List<BookCopyReservation> _reservedCopies = new();

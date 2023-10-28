@@ -1,6 +1,6 @@
 namespace MyLibrary.Query.Models;
 
-public sealed class BookReadModel
+internal sealed class BookReadModel
 {
     public Guid Id { get; init; }
     public string Title { get; init; }

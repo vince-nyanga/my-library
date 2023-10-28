@@ -3,7 +3,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Application.Abstractions.Repositories;
 
-public interface ICustomerRepository
+internal interface ICustomerRepository
 {
     ValueTask<Customer> GetAsync(CustomerId id);
     ValueTask AddAsync(Customer customer);

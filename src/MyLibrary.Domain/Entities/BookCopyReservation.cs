@@ -3,7 +3,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-public sealed class BookCopyReservation : Entity<BookReservationId>
+internal sealed class BookCopyReservation : Entity<BookReservationId>
 {
     private BookCopyReservation()
     {

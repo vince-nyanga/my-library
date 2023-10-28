@@ -3,4 +3,4 @@ using MyLibrary.Domain.Entities;
 
 namespace MyLibrary.Domain.Events;
 
-public sealed record BookCopyBorrowed(Book Book, Customer Customer) : IDomainEvent;
+internal sealed record BookCopyBorrowed(Book Book, Customer Customer) : IDomainEvent;

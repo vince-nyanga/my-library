@@ -3,9 +3,12 @@
         <FrameworkReference Include="Microsoft.AspnetCore.App" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\MyLibrary.Domain\MyLibrary.Domain.csproj" />
+        <ProjectReference Include="..\MyLibrary.Domain\MyLibrary.Domain.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Scrutor" />
+        <PackageReference Include="Scrutor" />
+    </ItemGroup>
+    <ItemGroup>
+        <InternalsVisibleTo Include="MyLibrary.Infrastructure" />
     </ItemGroup>
 </Project>

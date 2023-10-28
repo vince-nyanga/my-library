@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
+        <InternalsVisibleTo Include="MyLibrary.Application" />
+        <InternalsVisibleTo Include="MyLibrary.Infrastructure" />
         <InternalsVisibleTo Include="MyLibrary.Domain.UnitTests" />
     </ItemGroup>
 </Project>

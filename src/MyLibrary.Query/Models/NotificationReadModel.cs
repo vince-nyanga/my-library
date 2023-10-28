@@ -1,6 +1,6 @@
 namespace MyLibrary.Query.Models;
 
-public class NotificationReadModel
+internal class NotificationReadModel
 {
     public Guid Id { get; init; }
     public string CustomerId { get; init; }

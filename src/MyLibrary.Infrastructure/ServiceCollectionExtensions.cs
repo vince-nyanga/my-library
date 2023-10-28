@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICustomerRepository, SqlCustomerRepository>()
             .AddSingleton<IQueryDispatcher, InMemoryQueryDispatcher>()
             .AddScoped<IBookQueryService, SqlBookQueryService>()
+            .AddScoped<ICustomerQueryService, SqlCustomerQueryService>()
             .AddQueries();
 
         EnsureDatabaseCreated(services);

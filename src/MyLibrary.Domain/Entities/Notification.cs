@@ -4,7 +4,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-public sealed class Notification : Entity<NotificationId>
+internal sealed class Notification : Entity<NotificationId>
 {
     public Notification(NotificationId id, CustomerId customerId, NotificationMessage message)
     {
