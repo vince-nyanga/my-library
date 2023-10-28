@@ -41,6 +41,7 @@ internal sealed class Book : AggregateRoot<BookId>
 
     public void ReserveCopy(Customer customer)
     {
+        EnsureCustomerHasNotBorrowedOrReservedACopy(customer.Id);
         EnsureAvailableCopies();
 
         AvailableCopies -= 1;
@@ -55,27 +56,32 @@ internal sealed class Book : AggregateRoot<BookId>
     public void ExpireReservation(BookReservationId reservationId)
     {
         var reservedCopy = EnsureReservationExists(reservationId);
-
-        AvailableCopies = AvailableCopies += 1;
-        _reservedCopies.Remove(reservedCopy);
-        EnsureStockBalances();
-
+        RemoveReservation(reservedCopy);
         AddEvent(new BookReservationExpired(this, reservedCopy));
     }
 
     public void CancelReservation(BookReservationId reservationId)
     {
         var reservedCopy = EnsureReservationExists(reservationId);
+        RemoveReservation(reservedCopy);
+        AddEvent(new BookReservationCancelled(this, reservedCopy));
+    }
 
+    private void RemoveReservation(BookCopyReservation reservedCopy)
+    {
         AvailableCopies = AvailableCopies += 1;
         _reservedCopies.Remove(reservedCopy);
         EnsureStockBalances();
-
-        AddEvent(new BookReservationCancelled(this, reservedCopy));
     }
 
     public void BorrowCopy(Customer customer, DateOnly dueDate)
     {
+        var possibleReservation = ReservedCopies.SingleOrDefault(r => r.CustomerId == customer.Id);
+        if (possibleReservation is not null)
+        {
+            RemoveReservation(possibleReservation);
+        }
+        EnsureCustomerHasNotBorrowedOrReservedACopy(customer.Id);
         EnsureAvailableCopies();
         EnsureDueDateNotInThePast(dueDate);
 
@@ -90,6 +96,8 @@ internal sealed class Book : AggregateRoot<BookId>
     public void BorrowCopy(BookReservationId reservationId, DateOnly dueDate)
     {
         var reservation = EnsureReservationExists(reservationId);
+        
+        EnsureCustomerHasNotBorrowedCopy(reservation.CustomerId);
         EnsureDueDateNotInThePast(dueDate);
 
         var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), reservation.CustomerId, Id, dueDate);
@@ -165,6 +173,24 @@ internal sealed class Book : AggregateRoot<BookId>
         if (totalStock != TotalCopies)
         {
             throw new BookStockNotBalancingException(Id, TotalCopies, (ushort)totalStock);
+        }
+    }
+
+    private void EnsureCustomerHasNotBorrowedOrReservedACopy(CustomerId customerId)
+    {
+        if (ReservedCopies.Any(r => r.CustomerId == customerId))
+        {
+            throw new CustomerAlreadyReservedOrBorrowedBookException(Id, customerId);
+        }
+        
+        EnsureCustomerHasNotBorrowedCopy(customerId);
+    }
+
+    private void EnsureCustomerHasNotBorrowedCopy(CustomerId customerId)
+    {
+        if (GetUnreturnedBorrowedCopies().Any(c => c.CustomerId == customerId))
+        {
+            throw new CustomerAlreadyReservedOrBorrowedBookException(Id, customerId);
         }
     }
 }

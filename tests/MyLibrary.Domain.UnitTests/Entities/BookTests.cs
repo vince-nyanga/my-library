@@ -41,6 +41,36 @@ public class BookTests
     }
     
     [Fact]
+    public void ReserveCopy_WhenCustomerHasAlreadyReservedCopy_ShouldThrowException()
+    {
+        // Arrange
+        var book = CreateBook(1);
+        var customer = CreateCustomer();
+        book.ReserveCopy(customer);
+        
+        // Act
+        var reserveCopy = () => book.ReserveCopy(customer);
+        
+        // Assert
+        reserveCopy.Should().Throw<CustomerAlreadyReservedOrBorrowedBookException>();
+    }
+    
+    [Fact]
+    public void ReserveCopy_WhenCustomerHasAlreadyBorrowedCopy_ShouldThrowException()
+    {
+        // Arrange
+        var book = CreateBook(2);
+        var customer = CreateCustomer();
+        book.BorrowCopy(customer, DateOnly.FromDateTime(DateTime.Today.AddDays(1)));
+        
+        // Act
+        var reserveCopy = () => book.ReserveCopy(customer);
+        
+        // Assert
+        reserveCopy.Should().Throw<CustomerAlreadyReservedOrBorrowedBookException>();
+    }
+    
+    [Fact]
     public void ExpireReservation_WhenReservationIdDoesNotExist_ShouldThrowException()
     {
         // Arrange
@@ -119,7 +149,23 @@ public class BookTests
         book.GetAvailableCopies().Should().Be(1);
         book.Events.FindRaisedEvent<BookCopyBorrowed>().Should().NotBeNull();
     }
-
+    
+    [Fact]
+    public void BorrowCopy_WhenCustomerHasAlreadyBorrowed_ShouldThrowException()
+    {
+        // Arrange
+        var book = CreateBook(2);
+        var customer = CreateCustomer();
+        var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
+        book.BorrowCopy(customer, dueDate);
+        
+        // Act
+        var borrowCopy = () => book.BorrowCopy(customer, dueDate);
+        
+        // Assert
+        borrowCopy.Should().Throw<CustomerAlreadyReservedOrBorrowedBookException>();
+    }
+    
     [Fact]
     public void BorrowCopy_WhenCopiesAreUnavailable_ShouldThrowException()
     {
@@ -135,6 +181,7 @@ public class BookTests
         borrowCopy.Should().Throw<BookCopiesUnavailableException>();
         book.Events.Should().BeEmpty();
     }
+    
     
     [Fact]
     public void BorrowCopy_WhenDueDateIsInThePast_ShouldThrowException()
@@ -169,7 +216,7 @@ public class BookTests
         book.GetAvailableCopies().Should().Be(1);
         book.Events.FindRaisedEvent<ReservedBookBorrowed>().Should().NotBeNull();
     }
-    
+
     [Fact]
     public void BorrowCopy_FromReservation_WhenDueDateIsInThePast_ShouldThrowException()
     {
