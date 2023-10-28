@@ -106,7 +106,7 @@ public sealed class Book : AggregateRoot<BookId>
         => _reservedCopies.AsReadOnly();
 
     internal IReadOnlyCollection<BorrowedBookCopy> GetUnreturnedBorrowedCopies()
-        => _borrowedCopies.Where(b => !b.Returned).ToImmutableArray();
+        => _borrowedCopies.Where(b => !b.IsReturned).ToImmutableArray();
 
     private void EnsureAvailableCopies()
     {

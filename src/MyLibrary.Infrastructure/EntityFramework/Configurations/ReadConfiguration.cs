@@ -5,7 +5,7 @@ using MyLibrary.Query.Models;
 namespace MyLibrary.Infrastructure.EntityFramework.Configurations;
 
 internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel>, IEntityTypeConfiguration<BookCopyReservationReadModel>, 
-        IEntityTypeConfiguration<BorrowedBookCopyReadModel>, IEntityTypeConfiguration<CustomerReadModel>
+        IEntityTypeConfiguration<BorrowedBookCopyReadModel>, IEntityTypeConfiguration<CustomerReadModel>, IEntityTypeConfiguration<NotificationReadModel>
 {
     public void Configure(EntityTypeBuilder<BookReadModel> builder)
     {
@@ -31,6 +31,13 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel
     public void Configure(EntityTypeBuilder<CustomerReadModel> builder)
     {
         builder.HasKey(c => c.Id);
+        builder.HasMany<NotificationReadModel>();
         builder.ToTable("Customers");
+    }
+
+    public void Configure(EntityTypeBuilder<NotificationReadModel> builder)
+    {
+        builder.HasKey(n => n.Id);
+        builder.ToTable("Notifications");
     }
 }

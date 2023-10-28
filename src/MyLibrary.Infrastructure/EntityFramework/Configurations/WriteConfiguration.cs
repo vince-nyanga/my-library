@@ -7,7 +7,7 @@ using MyLibrary.Domain.ValueObjects;
 namespace MyLibrary.Infrastructure.EntityFramework.Configurations;
 
 internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEntityTypeConfiguration<BookCopyReservation>, 
-        IEntityTypeConfiguration<BorrowedBookCopy>, IEntityTypeConfiguration<Customer>
+        IEntityTypeConfiguration<BorrowedBookCopy>, IEntityTypeConfiguration<Customer>, IEntityTypeConfiguration<Notification>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
     {
@@ -79,7 +79,28 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         builder.Property(typeof(EmailAddress), "_emailAddress")
             .HasConversion(emailAddressConverter)
             .HasColumnName("EmailAddress");
+        
+        builder.HasMany(typeof(Notification), "_notifications");
 
         builder.ToTable("Customers");
+    }
+
+    public void Configure(EntityTypeBuilder<Notification> builder)
+    {
+        builder.HasKey(n => n.Id);
+        builder.Property(n => n.Id)
+            .HasConversion(id => id.Value, id => new NotificationId(id));
+
+        var notificationMessageConverter =
+            new ValueConverter<NotificationMessage, string>(m => m.Value, m => new NotificationMessage(m));
+        var customerIdConverter = new ValueConverter<CustomerId, string>(id => id.Value, id => new CustomerId(id));
+
+        builder.Property(n => n.Message)
+            .HasConversion(m => m.Value, m => new NotificationMessage(m));
+
+        builder.Property(n => n.CustomerId)
+            .HasConversion(id => id.Value, id => new CustomerId(id));
+
+        builder.ToTable("Notifications");
     }
 }

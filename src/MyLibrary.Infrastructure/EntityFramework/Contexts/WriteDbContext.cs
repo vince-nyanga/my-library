@@ -23,5 +23,6 @@ internal sealed class WriteDbContext : DbContext
         modelBuilder.ApplyConfiguration<BookCopyReservation>(configuration);
         modelBuilder.ApplyConfiguration<BorrowedBookCopy>(configuration);
         modelBuilder.ApplyConfiguration<Customer>(configuration);
+        modelBuilder.ApplyConfiguration<Notification>(configuration);
     }
 }

@@ -1,4 +1,5 @@
 using MyLibrary.Domain.Abstractions;
+using MyLibrary.Domain.Exceptions;
 using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
@@ -16,18 +17,23 @@ public sealed class BorrowedBookCopy : Entity<BorrowedBookId>
         CustomerId = customerId;
         BookId = bookId;
         DueDate = dueDate;
-        Returned = false;
+        IsReturned = false;
     }
     
     public CustomerId CustomerId { get; init; }
     public BookId BookId { get; init; }
     public DateOnly DueDate { get; init; }
-    public bool Returned { get; private set; }
+    public bool IsReturned { get; private set; }
     public DateOnly? DateReturned { get; private set; }
 
     public void Return()
     {
-        Returned = true;
+        if (IsReturned)
+        {
+            throw new BookCopyAlreadyReturnedException(Id, BookId);
+        }
+        
+        IsReturned = true;
         DateReturned = DateOnly.FromDateTime(DateTime.Today);
     }
 }

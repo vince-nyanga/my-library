@@ -23,5 +23,6 @@ internal sealed class ReadDbContext : DbContext
         modelBuilder.ApplyConfiguration<BookCopyReservationReadModel>(configuration);
         modelBuilder.ApplyConfiguration<BorrowedBookCopyReadModel>(configuration);
         modelBuilder.ApplyConfiguration<CustomerReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<NotificationReadModel>(configuration);
     }
 }
