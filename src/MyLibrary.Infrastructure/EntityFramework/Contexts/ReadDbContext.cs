@@ -25,4 +25,10 @@ internal sealed class ReadDbContext : DbContext
         modelBuilder.ApplyConfiguration<CustomerReadModel>(configuration);
         modelBuilder.ApplyConfiguration<NotificationReadModel>(configuration);
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    }
 }

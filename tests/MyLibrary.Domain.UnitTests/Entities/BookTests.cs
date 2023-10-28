@@ -62,7 +62,7 @@ public class BookTests
         var book = CreateBook(2);
         var customer = CreateCustomer();
         book.ReserveCopy(customer);
-        var reservationId = book.GetReservedCopies().Single().Id;
+        var reservationId = book.ReservedCopies.Single().Id;
         
         // Act
         book.ExpireReservation(reservationId);
@@ -94,7 +94,7 @@ public class BookTests
         var book = CreateBook(2);
         var customer = CreateCustomer();
         book.ReserveCopy(customer);
-        var reservationId = book.GetReservedCopies().Single().Id;
+        var reservationId = book.ReservedCopies.Single().Id;
         
         // Act
         book.CancelReservation(reservationId);
@@ -159,7 +159,7 @@ public class BookTests
         var book = CreateBook(2);
         var customer = CreateCustomer();
         book.ReserveCopy(customer);
-        var reservationId = book.GetReservedCopies().Single().Id;
+        var reservationId = book.ReservedCopies.Single().Id;
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
         
         // Act
@@ -178,7 +178,7 @@ public class BookTests
         var customer = CreateCustomer();
         book.ReserveCopy(customer);
         book.ClearEvents();
-        var reservationId = book.GetReservedCopies().Single().Id;
+        var reservationId = book.ReservedCopies.Single().Id;
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
         
         // Act

@@ -15,20 +15,16 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         builder.Property(b => b.Id)
             .HasConversion(id => id.Value, id => new BookId(id));
 
-        var bookTitleConverter = new ValueConverter<BookTitle, string>(t => t.Value, s => new BookTitle(s));
-
-        builder.Property(typeof(ushort), "_availableCopies")
-            .HasColumnName("AvailableCopies");
-        
-        builder.Property(typeof(ushort), "_totalCopies")
-            .HasColumnName("TotalCopies");
-
-        builder.Property(typeof(BookTitle), "_title")
-            .HasConversion(bookTitleConverter)
-            .HasColumnName("Title");
+        builder.Property(b => b.Title)
+            .HasConversion(t => t.Value, s => new BookTitle(s));
     
-        builder.HasMany(typeof(BookCopyReservation), "_reservedCopies");
-        builder.HasMany(typeof(BorrowedBookCopy), "_borrowedCopies");
+        builder.HasMany(b => b.BorrowedCopies)
+            .WithOne()
+            .HasForeignKey(b => b.BookId);
+        
+        builder.HasMany(b => b.ReservedCopies)
+            .WithOne()
+            .HasForeignKey(r => r.BookId);
 
         builder.ToTable("Books");
     }
@@ -69,18 +65,15 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         builder.Property(b => b.Id)
             .HasConversion(id => id.Value, id => new CustomerId(id));
 
-        var customerNameConverter = new ValueConverter<CustomerName, string>(n => n.Value, n => new CustomerName(n));
-        var emailAddressConverter = new ValueConverter<EmailAddress, string>(e => e.Value, e => new EmailAddress(e));
+        builder.Property(c => c.Name)
+            .HasConversion(n => n.Value, n => new CustomerName(n));
 
-        builder.Property(typeof(CustomerName), "_name")
-            .HasConversion(customerNameConverter)
-            .HasColumnName("Name");
-        
-        builder.Property(typeof(EmailAddress), "_emailAddress")
-            .HasConversion(emailAddressConverter)
-            .HasColumnName("EmailAddress");
-        
-        builder.HasMany(typeof(Notification), "_notifications");
+        builder.Property(c => c.EmailAddress)
+            .HasConversion(e => e.Value, e => new EmailAddress(e));
+
+        builder.HasMany(c => c.Notifications)
+            .WithOne()
+            .HasForeignKey(c => c.CustomerId);
 
         builder.ToTable("Customers");
     }
@@ -90,17 +83,14 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         builder.HasKey(n => n.Id);
         builder.Property(n => n.Id)
             .HasConversion(id => id.Value, id => new NotificationId(id));
-
-        var notificationMessageConverter =
-            new ValueConverter<NotificationMessage, string>(m => m.Value, m => new NotificationMessage(m));
-        var customerIdConverter = new ValueConverter<CustomerId, string>(id => id.Value, id => new CustomerId(id));
-
+        
         builder.Property(n => n.Message)
             .HasConversion(m => m.Value, m => new NotificationMessage(m));
 
         builder.Property(n => n.CustomerId)
             .HasConversion(id => id.Value, id => new CustomerId(id));
-
+        
+        
         builder.ToTable("Notifications");
     }
 }
