@@ -6,4 +6,6 @@ internal interface IBookQueryService
 {
     ValueTask<IReadOnlyCollection<BookReadModel>> GetAllAsync();
     ValueTask<IReadOnlyCollection<BookReadModel>> SearchByTitleAsync(string searchTerm);
+    ValueTask<IReadOnlyCollection<BorrowedBookCopyReadModel>> GetBorrowedBooksForCustomerAsync(string customerId);
+    ValueTask<IReadOnlyCollection<BookCopyReservationReadModel>> GetReservedBooksForCustomerAsync(string customerId);
 }

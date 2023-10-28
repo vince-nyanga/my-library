@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyLibrary.Domain.Entities;
 using MyLibrary.Domain.ValueObjects;
 
@@ -27,6 +26,8 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
             .HasForeignKey(r => r.BookId);
 
         builder.Ignore(b => b.CopiesNotReturned);
+
+        builder.HasData(GetBookSeedData());
 
         builder.ToTable("Books");
     }
@@ -94,5 +95,33 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         
         
         builder.ToTable("Notifications");
+    }
+
+    private static IEnumerable<Book> GetBookSeedData()
+    {
+        yield return new Book(
+            id: Guid.Parse("39A2D02A-FE6E-45F7-9906-4B5C3FF972EB"), 
+            title: "The Secrets To System Design",
+            totalCopies: 1);
+        
+        yield return new Book(
+            id: Guid.Parse("FF24B552-A6E3-4BFF-98DB-E3C64C1ED854"), 
+            title: "Domain Driven Design",
+            totalCopies: 5);
+        
+        yield return new Book(
+            id: Guid.Parse("6538A089-F495-41CE-9203-96C9A9B7B749"), 
+            title: "Clean Architecture",
+            totalCopies: 2);
+        
+        yield return new Book(
+            id: Guid.Parse("C6805347-B3E7-4D37-88CF-B6669B92B447"), 
+            title: "CQRS In Practice",
+            totalCopies: 10);
+        
+        yield return new Book(
+            id: Guid.Parse("BA846FDB-22AB-41EC-8694-85AAAB6CC75E"), 
+            title: "Waiting For The Rains",
+            totalCopies: 7);
     }
 }

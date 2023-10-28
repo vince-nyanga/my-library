@@ -11,11 +11,11 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel
     {
         builder.HasKey(b => b.Id);
         builder.HasMany(b => b.BorrowedCopies)
-            .WithOne()
+            .WithOne(b => b.Book)
             .HasForeignKey(b => b.BookId);
         
         builder.HasMany(b => b.ReservedCopies)
-            .WithOne()
+            .WithOne(b => b.Book)
             .HasForeignKey(r => r.BookId);
 
         builder.ToTable("Books");

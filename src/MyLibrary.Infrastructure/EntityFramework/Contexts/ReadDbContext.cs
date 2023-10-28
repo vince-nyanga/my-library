@@ -7,6 +7,8 @@ namespace MyLibrary.Infrastructure.EntityFramework.Contexts;
 internal sealed class ReadDbContext : DbContext
 {
     public DbSet<BookReadModel> Books { get; set; }
+    public DbSet<BorrowedBookCopyReadModel> BorrowedBooks { get; set; }
+    public DbSet<BookCopyReservationReadModel> ReservedCopies { get; set; }
     public DbSet<CustomerReadModel> Customers { get; set; }
 
     public ReadDbContext(DbContextOptions<ReadDbContext> options)

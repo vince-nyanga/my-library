@@ -14,7 +14,7 @@ internal sealed class SqlBookQueryService : IBookQueryService
         _context = context;
     }
 
-    public async ValueTask<IReadOnlyCollection<BookReadModel>>GetAllAsync()
+    public async ValueTask<IReadOnlyCollection<BookReadModel>> GetAllAsync()
     {
         return await _context.Books
             .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
@@ -27,6 +27,22 @@ internal sealed class SqlBookQueryService : IBookQueryService
         return await _context.Books
             .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
             .Where(b => EF.Functions.Like(b.Title, searchPattern))
+            .ToListAsync();
+    }
+
+    public async ValueTask<IReadOnlyCollection<BorrowedBookCopyReadModel>> GetBorrowedBooksForCustomerAsync(
+        string customerId)
+    {
+        return await _context.BorrowedBooks.Include(b => b.Book)
+            .Where(b => !b.IsReturned && b.CustomerId == customerId)
+            .ToListAsync();
+    }
+
+    public async ValueTask<IReadOnlyCollection<BookCopyReservationReadModel>> GetReservedBooksForCustomerAsync(
+        string customerId)
+    {
+        return await _context.ReservedCopies.Include(b => b.Book)
+            .Where(b => b.CustomerId == customerId)
             .ToListAsync();
     }
 }

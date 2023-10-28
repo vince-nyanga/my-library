@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace MyLibrary.Api.Responses.Books;
 
 internal sealed record class BookResponse
@@ -5,11 +7,13 @@ internal sealed record class BookResponse
     /// <summary>
     /// The book id.
     /// </summary>
+    [Required]
     public Guid Id { get; init; }
     
     /// <summary>
     /// The book title.
     /// </summary>
+    [Required]
     public string Title { get; init; }
     
     /// <summary>

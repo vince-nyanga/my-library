@@ -10,7 +10,9 @@ internal static class Extensions
         {
             FullName = customer.Name,
             EmailAddress = customer.EmailAddress,
-            TotalUnreadNotifications = customer.TotalUnreadNotifications
+            TotalUnreadNotifications = customer.TotalUnreadNotifications,
+            TotalBorrowedBooks = customer.TotalBorrowedBooks,
+            TotalReservedBooks = customer.TotalReservedBooks
         };
     }
 }
