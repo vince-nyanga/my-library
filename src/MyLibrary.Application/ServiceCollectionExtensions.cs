@@ -2,6 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Application.Abstractions.Commands;
 using MyLibrary.Application.Abstractions.DomainEvents;
 using MyLibrary.Application.Commands.Books;
+using MyLibrary.Application.DomainEventHandlers;
+using MyLibrary.Domain.Events;
 
 namespace MyLibrary.Application;
 
@@ -14,7 +16,7 @@ public static class ServiceCollectionExtensions
             .AsImplementedInterfaces()
             .WithScopedLifetime());
         
-        services.Scan(s => s.FromAssemblyOf<AddBookHandler>()
+        services.Scan(s => s.FromAssemblyOf<BookCopyReturnedHandler>()
             .AddClasses(c => c.AssignableTo(typeof(IDomainEventHandler<>)), publicOnly: false)
             .AsImplementedInterfaces()
             .WithScopedLifetime());

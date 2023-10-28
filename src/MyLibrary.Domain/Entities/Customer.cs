@@ -42,13 +42,18 @@ internal sealed class Customer : AggregateRoot<CustomerId>
     internal IReadOnlyCollection<Notification> UnreadNotifications
         => Notifications.Where(n => !n.IsRead).ToImmutableArray();
 
-    public void MarkAsRead(NotificationId notificationId)
+    public void SendNotification(NotificationMessage message)
+    {
+        _notifications.Add(new Notification(Guid.NewGuid(), Id, message));
+    }
+    
+    public void MarkNotificationAsRead(NotificationId notificationId)
     {
         var notification = EnsureNotificationExists(notificationId);
         MarkAsRead(notification);
     }
 
-    public void MarkAllAsRead()
+    public void MarkAllNotificationsAsRead()
     {
         foreach (var notification in UnreadNotifications)
         {

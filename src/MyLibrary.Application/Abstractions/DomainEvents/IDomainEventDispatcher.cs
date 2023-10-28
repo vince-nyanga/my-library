@@ -2,7 +2,7 @@ using MyLibrary.Domain.Abstractions;
 
 namespace MyLibrary.Application.Abstractions.DomainEvents;
 
-internal interface IDomainEventDispatcher
+public interface IDomainEventDispatcher
 {
-    ValueTask DispatchAsync<TEvent>(TEvent domainEvent) where TEvent : IDomainEvent;
+    ValueTask DispatchAsync(IDomainEvent domainEvent);
 }

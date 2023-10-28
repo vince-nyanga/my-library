@@ -11,12 +11,17 @@ internal sealed class InMemoryDomainEventDispatcher : IDomainEventDispatcher
     public InMemoryDomainEventDispatcher(IServiceProvider serviceProvider)
         => _serviceProvider = serviceProvider;
 
-    public async ValueTask DispatchAsync<TEvent>(TEvent domainEvent) where TEvent : IDomainEvent
+    public async ValueTask DispatchAsync(IDomainEvent domainEvent)
     {
+        var eventType = domainEvent.GetType();
+        var handlerType = typeof(IDomainEventHandler<>).MakeGenericType(eventType);
+        
         using var serviceScope = _serviceProvider.CreateScope();
-        var eventHandlers = serviceScope.ServiceProvider.GetServices<IDomainEventHandler<TEvent>>();
+        var eventHandlers = serviceScope.ServiceProvider.GetServices(handlerType);
 
-        var tasks = eventHandlers.Select(h => h.HandleAsync(domainEvent).AsTask());
+        var tasks = eventHandlers.Select(h => ((ValueTask)handlerType
+            .GetMethod(nameof(IDomainEventHandler<IDomainEvent>.HandleAsync))?
+            .Invoke(h, new[] { domainEvent })).AsTask());
         
         await Task.WhenAll(tasks);
     }

@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using MyLibrary.Application.Abstractions.DomainEvents;
 using MyLibrary.Domain.Abstractions;
@@ -33,15 +34,21 @@ internal sealed class WriteDbContext : DbContext
     
     public async Task SaveChangesAndDispatchEventsAsync()
     {
-        var domainEvents = ChangeTracker.Entries<IAggregateRoot>()
+        var aggregateRoots = ChangeTracker.Entries<IAggregateRoot>()
             .Select(entityEntry => entityEntry.Entity)
             .Where(aggregateRoot => aggregateRoot.Events.Any())
-            .SelectMany(a => a.Events)
             .ToArray();
 
+        var domainEvents = aggregateRoots.SelectMany(a => a.Events.ToImmutableArray());
+        
         await SaveChangesAsync();
 
         await Task.WhenAll(domainEvents.Select(e => _domainEventDispatcher.DispatchAsync(e).AsTask()));
+        
+        foreach (var aggregateRoot in aggregateRoots)
+        {
+            aggregateRoot.ClearEvents();
+        }
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())

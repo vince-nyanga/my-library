@@ -259,14 +259,14 @@ public class BookTests
         var customer = CreateCustomer();
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
         book.BorrowCopy(customer, dueDate);
-        var borrowedBookId = book.GetUnreturnedBorrowedCopies().Single().Id;
+        var borrowedBookId = book.CopiesNotReturned.Single().Id;
         
         // Act
         book.ReturnCopy(borrowedBookId);
         
         // Assert
         book.GetAvailableCopies().Should().Be(2);
-        book.GetUnreturnedBorrowedCopies().Should().BeEmpty();
+        book.CopiesNotReturned.Should().BeEmpty();
         book.Events.FindRaisedEvent<BookCopyReturned>().Should().NotBeNull();
     }
 

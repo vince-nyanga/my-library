@@ -1,6 +1,6 @@
 using MyLibrary.Domain.Abstractions;
-using MyLibrary.Domain.Entities;
+using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Events;
 
-internal sealed record BookCopyBorrowed(Book Book, Customer Customer) : IDomainEvent;
+public sealed record BookCopyBorrowed(string BookTitle, CustomerId CustomerId, DateOnly DueDate) : IDomainEvent;

@@ -3,7 +3,7 @@ namespace MyLibrary.Query.Models;
 internal sealed class BorrowedBookCopyReadModel
 {
     public Guid Id { get; set; }
-    public Guid CustomerId { get; init; }
+    public string CustomerId { get; init; }
     public Guid BookId { get; init; }
     public DateOnly DueDate { get; init; }
     public bool IsReturned { get; private set; }

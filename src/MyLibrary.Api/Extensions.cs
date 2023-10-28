@@ -89,8 +89,13 @@ internal static class Extensions
 
     private static void ConfigureProblemDetails(ProblemDetailsOptions options)
     {
-        options.IncludeExceptionDetails = (_, _) => false;
+        options.IncludeExceptionDetails = (_, _) => true; // TODO: this should be false in production, otherwise you'll expose too much detail...
+        
+        options.MapToStatusCode<ConflictingStateException>(StatusCodes.Status409Conflict);
+        options.MapToStatusCode<EntityNotFoundException>(StatusCodes.Status404NotFound);
         options.MapToStatusCode<ForbiddenActionException>(StatusCodes.Status403Forbidden);
+        options.MapToStatusCode<InternalErrorException>(StatusCodes.Status500InternalServerError);
+        options.MapToStatusCode<ValidationException>(StatusCodes.Status400BadRequest);
     }
 
     private static void IncludeXmlCommentsIfExists(this SwaggerGenOptions options)

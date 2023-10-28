@@ -66,14 +66,7 @@ internal sealed class Book : AggregateRoot<BookId>
         RemoveReservation(reservedCopy);
         AddEvent(new BookReservationCancelled(this, reservedCopy));
     }
-
-    private void RemoveReservation(BookCopyReservation reservedCopy)
-    {
-        AvailableCopies = AvailableCopies += 1;
-        _reservedCopies.Remove(reservedCopy);
-        EnsureStockBalances();
-    }
-
+    
     public void BorrowCopy(Customer customer, DateOnly dueDate)
     {
         var possibleReservation = ReservedCopies.SingleOrDefault(r => r.CustomerId == customer.Id);
@@ -90,7 +83,7 @@ internal sealed class Book : AggregateRoot<BookId>
         _borrowedCopies.Add(borrowedBookCopy);
         EnsureStockBalances();
 
-        AddEvent(new BookCopyBorrowed(this, customer));
+        AddEvent(new BookCopyBorrowed(Title, customer.Id, dueDate));
     }
 
     public void BorrowCopy(BookReservationId reservationId, DateOnly dueDate)
@@ -117,14 +110,18 @@ internal sealed class Book : AggregateRoot<BookId>
         EnsureStockBalances();
         
         copy.Return();
-        AddEvent(new BookCopyReturned(this, copy));
+        AddEvent(new BookCopyReturned(Title, copy.CustomerId));
     }
 
     internal ushort GetAvailableCopies()
         => AvailableCopies;
 
-    public IReadOnlyCollection<BorrowedBookCopy> GetUnreturnedBorrowedCopies()
-        => BorrowedCopies.Where(b => !b.IsReturned).ToImmutableArray();
+    private void RemoveReservation(BookCopyReservation reservedCopy)
+    {
+        AvailableCopies = AvailableCopies += 1;
+        _reservedCopies.Remove(reservedCopy);
+        EnsureStockBalances();
+    }
 
     private void EnsureAvailableCopies()
     {
@@ -166,9 +163,12 @@ internal sealed class Book : AggregateRoot<BookId>
         return borrowedCopy;
     }
 
+    internal IReadOnlyCollection<BorrowedBookCopy> CopiesNotReturned =>
+        _borrowedCopies.Where(c => !c.IsReturned).ToImmutableArray();
+
     private void EnsureStockBalances()
     {
-        var totalStock = AvailableCopies + ReservedCopies.Count + GetUnreturnedBorrowedCopies().Count;
+        var totalStock = AvailableCopies + ReservedCopies.Count + CopiesNotReturned.Count;
 
         if (totalStock != TotalCopies)
         {
@@ -188,7 +188,7 @@ internal sealed class Book : AggregateRoot<BookId>
 
     private void EnsureCustomerHasNotBorrowedCopy(CustomerId customerId)
     {
-        if (GetUnreturnedBorrowedCopies().Any(c => c.CustomerId == customerId))
+        if (CopiesNotReturned.Any(c => c.CustomerId == customerId))
         {
             throw new CustomerAlreadyReservedOrBorrowedBookException(Id, customerId);
         }

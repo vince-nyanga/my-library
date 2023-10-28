@@ -26,6 +26,8 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
             .WithOne()
             .HasForeignKey(r => r.BookId);
 
+        builder.Ignore(b => b.CopiesNotReturned);
+
         builder.ToTable("Books");
     }
 
