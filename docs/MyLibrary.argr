@@ -1,0 +1,20 @@
+<ArchitectureGraph>
+  <Module Identifier="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D" Name="MyLibrary.Api" />
+  <Module Identifier="65086CA4-9371-4275-93B0-E646E4207595" Name="MyLibrary.Infrastructure" />
+  <Module Identifier="B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7" Name="MyLibrary.Application" />
+  <Module Identifier="3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7" Name="MyLibrary.Domain" />
+  <Module Identifier="C4C44726-C2F0-4336-B015-5BD693077547" Name="MyLibrary.Query" />
+  <Module Identifier="09CDD64C-AE7B-495D-997D-F91C2BD2B2DC" Name="MyLibrary.Api.IntegrationTests" />
+  <Module Identifier="BE3A7A7E-0D44-4AEB-9F23-D7B9E8B54259" Name="MyLibrary.Api.UnitTests" />
+  <Module Identifier="B84CEE92-07AA-4465-AF43-9D61370AA823" Name="MyLibrary.Application.UnitTests" />
+  <Module Identifier="FDB77FE3-3A33-495C-BD1E-F92680091D07" Name="MyLibrary.Domain.UnitTests" />
+  <Reference Identifier="B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7/r:MyLibrary.Domain" SourceId="B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7" Name="MyLibrary.Domain" TargetId="3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7" />
+  <Reference Identifier="65086CA4-9371-4275-93B0-E646E4207595/r:MyLibrary.Application" SourceId="65086CA4-9371-4275-93B0-E646E4207595" Name="MyLibrary.Application" TargetId="B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7" />
+  <Reference Identifier="65086CA4-9371-4275-93B0-E646E4207595/r:MyLibrary.Domain" SourceId="65086CA4-9371-4275-93B0-E646E4207595" Name="MyLibrary.Domain" TargetId="3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7" />
+  <Reference Identifier="65086CA4-9371-4275-93B0-E646E4207595/r:MyLibrary.Query" SourceId="65086CA4-9371-4275-93B0-E646E4207595" Name="MyLibrary.Query" TargetId="C4C44726-C2F0-4336-B015-5BD693077547" />
+  <Reference Identifier="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D/r:MyLibrary.Infrastructure" SourceId="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D" Name="MyLibrary.Infrastructure" TargetId="65086CA4-9371-4275-93B0-E646E4207595" />
+  <Reference Identifier="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D/r:MyLibrary.Application" SourceId="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D" Name="MyLibrary.Application" TargetId="B1A5FA5B-FA1C-4A61-AD61-39DE204F83B7" />
+  <Reference Identifier="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D/r:MyLibrary.Domain" SourceId="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D" Name="MyLibrary.Domain" TargetId="3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7" />
+  <Reference Identifier="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D/r:MyLibrary.Query" SourceId="AAFEF826-815E-4F3E-BA53-7DD5CBF3302D" Name="MyLibrary.Query" TargetId="C4C44726-C2F0-4336-B015-5BD693077547" />
+  <Reference Identifier="FDB77FE3-3A33-495C-BD1E-F92680091D07/r:MyLibrary.Domain" SourceId="FDB77FE3-3A33-495C-BD1E-F92680091D07" Name="MyLibrary.Domain" TargetId="3E7C73D4-B1C2-4837-8E58-2C65FC1C27D7" />
+</ArchitectureGraph>

@@ -25,7 +25,7 @@ public sealed class Book : AggregateRoot<BookId>
         _totalCopies = totalCopies;
         _availableCopies = totalCopies;
     }
-    
+
     public void ReserveCopy(Customer customer)
     {
         EnsureAvailableCopies();
@@ -34,6 +34,7 @@ public sealed class Book : AggregateRoot<BookId>
 
         var reservation = new BookCopyReservation(Guid.NewGuid(), Id, customer.Id);
         _reservedCopies.Add(reservation);
+        EnsureStockBalances();
 
         AddEvent(new BookReservationMade(this, customer));
     }
@@ -41,9 +42,10 @@ public sealed class Book : AggregateRoot<BookId>
     public void ExpireReservation(BookReservationId reservationId)
     {
         var reservedCopy = EnsureReservationExists(reservationId);
-        
-        _availableCopies = _availableCopies += 1;;
+
+        _availableCopies = _availableCopies += 1;
         _reservedCopies.Remove(reservedCopy);
+        EnsureStockBalances();
 
         AddEvent(new BookReservationExpired(this, reservedCopy));
     }
@@ -51,9 +53,10 @@ public sealed class Book : AggregateRoot<BookId>
     public void CancelReservation(BookReservationId reservationId)
     {
         var reservedCopy = EnsureReservationExists(reservationId);
-        
-        _availableCopies = _availableCopies += 1;;
+
+        _availableCopies = _availableCopies += 1;
         _reservedCopies.Remove(reservedCopy);
+        EnsureStockBalances();
 
         AddEvent(new BookReservationCancelled(this, reservedCopy));
     }
@@ -66,6 +69,7 @@ public sealed class Book : AggregateRoot<BookId>
         _availableCopies -= 1;
         var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), customer.Id, Id, dueDate);
         _borrowedCopies.Add(borrowedBookCopy);
+        EnsureStockBalances();
 
         AddEvent(new BookCopyBorrowed(this, customer));
     }
@@ -77,6 +81,8 @@ public sealed class Book : AggregateRoot<BookId>
 
         var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), reservation.CustomerId, Id, dueDate);
         _borrowedCopies.Add(borrowedBookCopy);
+        _reservedCopies.Remove(reservation);
+        EnsureStockBalances();
 
         AddEvent(new ReservedBookBorrowed(this, reservation));
     }
@@ -87,7 +93,8 @@ public sealed class Book : AggregateRoot<BookId>
 
         _availableCopies += 1;
         _borrowedCopies.Remove(copy);
-
+        EnsureStockBalances();
+        
         copy.Return();
         AddEvent(new BookCopyReturned(this, copy));
     }
@@ -139,5 +146,15 @@ public sealed class Book : AggregateRoot<BookId>
         }
 
         return borrowedCopy;
+    }
+
+    private void EnsureStockBalances()
+    {
+        var totalStock = _availableCopies + _reservedCopies.Count + GetUnreturnedBorrowedCopies().Count;
+
+        if (totalStock != _totalCopies)
+        {
+            throw new BookStockNotBalancingException(Id, _totalCopies, (ushort)totalStock);
+        }
     }
 }
