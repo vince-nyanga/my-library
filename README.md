@@ -85,6 +85,6 @@ The project uses [Coravel](https://docs.coravel.net/) to schedule a background j
 
 ## Things To Do
 
-- Add more tests to all layers
-- Add more features
-- Clean up a few things
+- Add more tests to all layers.
+- Add more features.
+- Clean up a few things.
