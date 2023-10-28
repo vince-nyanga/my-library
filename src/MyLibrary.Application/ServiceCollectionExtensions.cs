@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Application.Abstractions.Commands;
+using MyLibrary.Application.Abstractions.DomainEvents;
 using MyLibrary.Application.Commands.Books;
 
 namespace MyLibrary.Application;
@@ -12,6 +13,12 @@ public static class ServiceCollectionExtensions
             .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)), publicOnly: false)
             .AsImplementedInterfaces()
             .WithScopedLifetime());
+        
+        services.Scan(s => s.FromAssemblyOf<AddBookHandler>()
+            .AddClasses(c => c.AssignableTo(typeof(IDomainEventHandler<>)), publicOnly: false)
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+        
         return services;
     }
 }

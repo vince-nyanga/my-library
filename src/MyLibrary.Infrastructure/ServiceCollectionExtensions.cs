@@ -3,8 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Application;
 using MyLibrary.Application.Abstractions.Commands;
+using MyLibrary.Application.Abstractions.DomainEvents;
 using MyLibrary.Application.Abstractions.Repositories;
 using MyLibrary.Infrastructure.Commands;
+using MyLibrary.Infrastructure.DomainEvents;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
 using MyLibrary.Infrastructure.Queries;
 using MyLibrary.Infrastructure.Repositories;
@@ -21,12 +23,13 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<WriteDbContext>(options => options.UseNpgsql(connectionString))
             .AddDbContext<ReadDbContext>(options => options.UseNpgsql(connectionString))
             .AddSingleton<ICommandDispatcher, InMemoryCommandDispatcher>()
-            .AddApplication()
+            .AddSingleton<IQueryDispatcher, InMemoryQueryDispatcher>()
+            .AddSingleton<IDomainEventDispatcher, InMemoryDomainEventDispatcher>()
             .AddScoped<IBookRepository, SqlBookRepository>()
             .AddScoped<ICustomerRepository, SqlCustomerRepository>()
-            .AddSingleton<IQueryDispatcher, InMemoryQueryDispatcher>()
             .AddScoped<IBookQueryService, SqlBookQueryService>()
             .AddScoped<ICustomerQueryService, SqlCustomerQueryService>()
+            .AddApplication()
             .AddQueries();
 
         EnsureDatabaseCreated(services);

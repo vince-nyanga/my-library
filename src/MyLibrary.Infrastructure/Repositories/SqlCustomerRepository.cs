@@ -25,12 +25,12 @@ internal sealed class SqlCustomerRepository : ICustomerRepository
     public async ValueTask AddAsync(Customer customer)
     {
         await _context.AddAsync(customer);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAndDispatchEventsAsync();
     }
 
     public async ValueTask UpdateAsync(Customer customer)
     {
         _context.Customers.Update(customer);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAndDispatchEventsAsync();
     }
 }

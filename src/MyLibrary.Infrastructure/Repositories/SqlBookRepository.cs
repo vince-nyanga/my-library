@@ -18,7 +18,7 @@ internal sealed class SqlBookRepository : IBookRepository
     public async ValueTask AddAsync(Book book)
     {
         await _context.Books.AddAsync(book);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAndDispatchEventsAsync();
     }
 
     public async ValueTask<Book> GetAsync(BookId id)
