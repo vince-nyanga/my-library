@@ -28,7 +28,7 @@ internal sealed class BorrowBookController : ControllerBase
     ///
     ///     POST
     ///     {
-    ///         "returnDate": "31/12/2023"
+    ///         "returnDate": "2023-12-25"
     ///     }
     /// </remarks>
     [HttpPost("{id:guid}/borrow", Name = nameof(BorrowBookAsync))]
