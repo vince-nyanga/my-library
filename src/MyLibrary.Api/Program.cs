@@ -1,11 +1,12 @@
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MyLibrary.Api;
+using MyLibrary.Api.BackgroundServices;
 using MyLibrary.Api.Features;
 using MyLibrary.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHostedService<NotificationBrokerService>();
 builder.Services.AddControllers()
     .ConfigureApplicationPartManager(manager =>
     {

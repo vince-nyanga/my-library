@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
+using System.Threading.Channels;
 using Microsoft.EntityFrameworkCore;
-using MyLibrary.Application.Abstractions.DomainEvents;
 using MyLibrary.Domain.Abstractions;
 using MyLibrary.Domain.Entities;
 using MyLibrary.Infrastructure.EntityFramework.Configurations;
@@ -9,15 +9,15 @@ namespace MyLibrary.Infrastructure.EntityFramework.Contexts;
 
 internal sealed class WriteDbContext : DbContext
 {
-    private readonly IDomainEventDispatcher _domainEventDispatcher;
-    
+    private readonly ChannelWriter<IDomainEvent> _channelWriter;
+
     public DbSet<Book> Books { get; set; }
     public DbSet<Customer> Customers { get; set; }
     
-    public WriteDbContext(DbContextOptions<WriteDbContext> options, IDomainEventDispatcher domainEventDispatcher)
+    public WriteDbContext(DbContextOptions<WriteDbContext> options, ChannelWriter<IDomainEvent> channelWriter)
         : base(options)
     {
-        _domainEventDispatcher = domainEventDispatcher;
+        _channelWriter = channelWriter;
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ internal sealed class WriteDbContext : DbContext
         
         await SaveChangesAsync();
 
-        await Task.WhenAll(domainEvents.Select(e => _domainEventDispatcher.DispatchAsync(e).AsTask()));
+        await Task.WhenAll(domainEvents.Select(e => _channelWriter.WriteAsync(e).AsTask()));
         
         foreach (var aggregateRoot in aggregateRoots)
         {
