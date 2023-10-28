@@ -1,12 +1,17 @@
+using Coravel;
 using Hellang.Middleware.ProblemDetails;
 using MyLibrary.Api;
 using MyLibrary.Api.BackgroundServices;
 using MyLibrary.Api.Features;
+using MyLibrary.Api.Jobs;
 using MyLibrary.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHostedService<NotificationBrokerService>();
+builder.Services.AddScheduler();
+builder.Services.AddTransient<ExpireBookReservationsJob>();
+
 builder.Services.AddControllers()
     .ConfigureApplicationPartManager(manager =>
     {
@@ -18,8 +23,6 @@ builder.Services.AddInfrastructure(builder.Configuration)
     .AddEndpointsApiExplorer()
     .AddSwagger(builder.Configuration)
     .AddAuth(builder.Configuration);
-
-
 
 var app = builder.Build();
 
@@ -45,6 +48,12 @@ app.UseAuthorization();
 #pragma warning disable ASP0014
 app.UseEndpoints(options => options.MapControllers().RequireAuthorization());
 #pragma warning restore ASP0014
+
+app.Services.UseScheduler(scheduler =>
+{
+    scheduler.Schedule<ExpireBookReservationsJob>()
+        .EverySeconds(30);
+});
 
 app.Run();
 

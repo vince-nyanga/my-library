@@ -26,7 +26,7 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
             .HasForeignKey(b => b.BookId);
         
         builder.HasMany(b => b.ReservedCopies)
-            .WithOne()
+            .WithOne(r => r.Book)
             .HasForeignKey(r => r.BookId);
 
         builder.Ignore(b => b.CopiesNotReturned);

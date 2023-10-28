@@ -19,6 +19,6 @@ internal class WatchedBook : Entity<WatchedBookId>
     public CustomerId CustomerId { get; init; }
     public BookId BookId { get; init; }
     public string BookTitle { get; init; }
-    
-    public virtual Customer Customer { get; init; }
+
+    public virtual Customer Customer { get; set; }
 }

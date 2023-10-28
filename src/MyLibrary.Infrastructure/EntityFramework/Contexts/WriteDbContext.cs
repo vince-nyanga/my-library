@@ -13,6 +13,8 @@ internal sealed class WriteDbContext : DbContext
 
     public DbSet<Book> Books { get; set; }
     public DbSet<Customer> Customers { get; set; }
+
+    public DbSet<ReservedBookCopy> ReservedBooks { get; set; }
     public DbSet<WatchedBook> WatchedBooks { get; set; }
     
     public WriteDbContext(DbContextOptions<WriteDbContext> options, ChannelWriter<IDomainEvent> channelWriter)

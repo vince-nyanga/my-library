@@ -39,7 +39,7 @@ internal static class Extensions
             Id = reservedReservedBook.Id,
             Title = reservedReservedBook.Book.Title,
             CustomerId = reservedReservedBook.CustomerId,
-            ExpiryDate = reservedReservedBook.DateReserved.AddHours(24) // TODO: this should be configurable
+            ExpiryDate = reservedReservedBook.ExpiryDate
         };
     }
 }

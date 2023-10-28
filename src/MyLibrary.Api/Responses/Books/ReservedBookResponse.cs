@@ -18,5 +18,5 @@ internal sealed record ReservedBookResponse
     /// <summary>
     /// The date and time on which the reservation will expire.
     /// </summary>
-    public DateTimeOffset ReservationExpiryDate { get; init; }
+    public DateTime ReservationExpiryDate { get; init; }
 }

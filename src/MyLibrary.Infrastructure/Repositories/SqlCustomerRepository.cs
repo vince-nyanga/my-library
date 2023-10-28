@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MyLibrary.Application.Abstractions.Repositories;
+using MyLibrary.Application.Repositories;
 using MyLibrary.Domain.Entities;
 using MyLibrary.Domain.ValueObjects;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
@@ -33,11 +33,12 @@ internal sealed class SqlCustomerRepository : ICustomerRepository
         _context.Customers.Update(customer);
         await _context.SaveChangesAndDispatchEventsAsync();
     }
-
-    public async ValueTask<IReadOnlyCollection<WatchedBook>> GetWatchedBooksAsync(BookId bookId)
+    
+    public async ValueTask<IReadOnlyCollection<Customer>> GetWithWatchedBooksAsync(BookId bookId)
     {
-        return await _context.WatchedBooks.Include(b => b.Customer)
-            .Where(b => b.BookId == bookId)
+        return await _context.Customers
+            .Include(b => b.WatchedBooks.Where(w => w.BookId == bookId))
+            .Where(b => b.WatchedBooks.Count > 0)
             .ToListAsync();
     }
 

@@ -3,7 +3,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-internal sealed class ReservedBookCopy : Entity<ReservedBookId>
+internal class ReservedBookCopy : Entity<ReservedBookId>
 {
     private ReservedBookCopy()
     {
@@ -14,10 +14,12 @@ internal sealed class ReservedBookCopy : Entity<ReservedBookId>
         Id = id;
         BookId = bookId;
         CustomerId = customerId;
-        DateReserved = DateTimeOffset.UtcNow;
+        ExpiryDate = DateTime.UtcNow;
     }
 
     public BookId BookId { get; init; }
     public CustomerId CustomerId { get; init; }
-    public DateTimeOffset DateReserved { get; init; }
+    public DateTime ExpiryDate { get; init; }
+    
+    public virtual Book Book { get; set; }
 }

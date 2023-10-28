@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Application;
 using MyLibrary.Application.Abstractions.Commands;
 using MyLibrary.Application.Abstractions.DomainEvents;
-using MyLibrary.Application.Abstractions.Repositories;
+using MyLibrary.Application.Repositories;
 using MyLibrary.Domain.Abstractions;
 using MyLibrary.Infrastructure.Commands;
 using MyLibrary.Infrastructure.DomainEvents;
@@ -34,6 +34,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICustomerRepository, SqlCustomerRepository>()
             .AddScoped<IBookQueryService, SqlBookQueryService>()
             .AddScoped<ICustomerQueryService, SqlCustomerQueryService>()
+            .AddScoped<IReservedBookRepository, SqlReservedBookRepository>()
+            .AddScoped<IWatchedBookRepository, SqlWatchedBookRepository>()
             .AddApplication()
             .AddQueries();
 

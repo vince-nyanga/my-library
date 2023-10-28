@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MyLibrary.Application.Abstractions.Repositories;
+using MyLibrary.Application.Repositories;
 using MyLibrary.Domain.Entities;
 using MyLibrary.Domain.ValueObjects;
 using MyLibrary.Infrastructure.EntityFramework.Contexts;
@@ -32,6 +32,25 @@ internal sealed class SqlBookRepository : IBookRepository
     public async ValueTask SaveAsync(Book book)
     {
         _context.Books.Update(book);
+        await _context.SaveChangesAndDispatchEventsAsync();
+    }
+
+    public async ValueTask<IReadOnlyCollection<Book>> GetWithExpiredReservationsAsync()
+    {
+        return await _context.Books
+            .Distinct()
+            .Include(b => b.ReservedCopies)
+            .Where(b => b.ReservedCopies.Select(c => c.ExpiryDate <= DateTime.UtcNow).Any())
+            .ToListAsync();
+    }
+
+    public async ValueTask SaveManyAsync(IReadOnlyCollection<Book> books)
+    {
+        foreach (var book in books)
+        {
+            _context.Books.Update(book);
+        }
+
         await _context.SaveChangesAndDispatchEventsAsync();
     }
 }

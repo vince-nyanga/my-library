@@ -1,6 +1,6 @@
 using MyLibrary.Application.Abstractions.Auth;
 using MyLibrary.Application.Abstractions.Commands;
-using MyLibrary.Application.Abstractions.Repositories;
+using MyLibrary.Application.Repositories;
 using MyLibrary.Domain.Entities;
 
 namespace MyLibrary.Application.Commands.Customers;

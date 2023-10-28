@@ -1,5 +1,5 @@
 using MyLibrary.Application.Abstractions.DomainEvents;
-using MyLibrary.Application.Abstractions.Repositories;
+using MyLibrary.Application.Repositories;
 using MyLibrary.Domain.Events;
 
 namespace MyLibrary.Application.DomainEventHandlers;
