@@ -20,4 +20,13 @@ internal sealed class SqlBookQueryService : IBookQueryService
             .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
             .ToListAsync();
     }
+
+    public async ValueTask<IReadOnlyCollection<BookReadModel>> SearchByTitleAsync(string searchTerm)
+    {
+        var searchPattern = $"%{searchTerm}%";
+        return await _context.Books
+            .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
+            .Where(b => EF.Functions.Like(b.Title, searchPattern))
+            .ToListAsync();
+    }
 }
