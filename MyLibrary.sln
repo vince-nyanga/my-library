@@ -31,6 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLibrary.Query", "src\MyLibrary.Query\MyLibrary.Query.csproj", "{C4C44726-C2F0-4336-B015-5BD693077547}"

@@ -8,29 +8,24 @@ namespace MyLibrary.Application.DomainEventHandlers;
 
 internal sealed class BookReservationCancelledHandler : IDomainEventHandler<BookReservationCancelled>
 {
-    private readonly IWatchedBookRepository _watchedBookRepository;
     private readonly ICustomerRepository _customerRepository;
 
-    public BookReservationCancelledHandler(IWatchedBookRepository watchedBookRepository,
-        ICustomerRepository customerRepository)
-    {
-        _watchedBookRepository = watchedBookRepository;
-        _customerRepository = customerRepository;
-    }
+    public BookReservationCancelledHandler(ICustomerRepository customerRepository)
+        => _customerRepository = customerRepository;
 
     public async ValueTask HandleAsync(BookReservationCancelled domainEvent)
     {
-        var watchedBooks = await _watchedBookRepository.GetForBookIdAsync(domainEvent.BookId);
+        var customer = await _customerRepository.GetAsync(domainEvent.CustomerId);
+        customer.SendNotification(
+            $"You have cancelled your reservation of {domainEvent.BookTitle}.");
 
-        var updatedCustomers = new List<Customer>();
+        var customers = await _customerRepository.GetWithWatchedBooksAsync(domainEvent.BookId);
 
-        foreach (var book in watchedBooks)
+        var updatedCustomers = new List<Customer>() { customer };
+
+        foreach (var watchingCustomer in customers)
         {
-            var watchingCustomer = book.Customer;
-            var watchedBook = watchingCustomer.WatchedBooks
-                .Single(b => b.BookId == new BookId(domainEvent.BookId));
-
-            watchingCustomer.NotifyWatchedBookAvailability(watchedBook.BookId);
+            watchingCustomer.NotifyWatchedBookAvailability(domainEvent.BookId);
             updatedCustomers.Add(watchingCustomer);
         }
 

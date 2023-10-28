@@ -5,10 +5,13 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
+COPY ["Directory.Build.props", "/"]
+COPY ["Directory.Packages.props", "/"]
 COPY ["src/MyLibrary.Api/MyLibrary.Api.csproj", "src/MyLibrary.Api/"]
 COPY ["src/MyLibrary.Infrastructure/MyLibrary.Infrastructure.csproj", "src/MyLibrary.Infrastructure/"]
 COPY ["src/MyLibrary.Application/MyLibrary.Application.csproj", "src/MyLibrary.Application/"]
 COPY ["src/MyLibrary.Domain/MyLibrary.Domain.csproj", "src/MyLibrary.Domain/"]
+COPY ["src/MyLibrary.Query/MyLibrary.Query.csproj", "src/MyLibrary.Query/"]
 RUN dotnet restore "src/MyLibrary.Api/MyLibrary.Api.csproj"
 COPY . .
 WORKDIR "/src/src/MyLibrary.Api"

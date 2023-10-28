@@ -14,7 +14,7 @@ internal sealed class ReservedBookCopy : Entity<ReservedBookId>
         Id = id;
         BookId = bookId;
         CustomerId = customerId;
-        ExpiryDate = DateTime.UtcNow.AddHours(24);
+        ExpiryDate = DateTime.UtcNow.AddHours(24); // this may need to be configurable, or use policies...
     }
 
     public BookId BookId { get; init; }

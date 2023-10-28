@@ -28,7 +28,7 @@ var app = builder.Build();
 
 app.UseProblemDetails();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
@@ -52,7 +52,7 @@ app.UseEndpoints(options => options.MapControllers().RequireAuthorization());
 app.Services.UseScheduler(scheduler =>
 {
     scheduler.Schedule<ExpireBookReservationsJob>()
-        .EverySeconds(30);
+        .EveryFifteenMinutes(); // this will do for now...
 });
 
 app.Run();

@@ -82,11 +82,13 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
 
         builder.HasMany(c => c.Notifications)
             .WithOne()
-            .HasForeignKey(c => c.CustomerId);
+            .HasForeignKey(c => c.CustomerId)
+            .IsRequired();
 
         builder.HasMany(c => c.WatchedBooks)
-            .WithOne(w => w.Customer)
-            .HasForeignKey(w => w.CustomerId);
+            .WithOne()
+            .HasForeignKey(w => w.CustomerId)
+            .IsRequired();
 
         builder.ToTable("Customers");
     }
