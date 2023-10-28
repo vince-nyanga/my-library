@@ -9,7 +9,7 @@ namespace MyLibrary.Domain.Entities;
 internal sealed class Book : AggregateRoot<BookId>
 {
     private readonly List<BorrowedBookCopy> _borrowedCopies = new();
-    private readonly List<BookCopyReservation> _reservedCopies = new();
+    private readonly List<ReservedBookCopy> _reservedCopies = new();
     
     private Book()
     {
@@ -33,7 +33,7 @@ internal sealed class Book : AggregateRoot<BookId>
         init => _borrowedCopies = value.ToList();
     }
 
-    public IReadOnlyCollection<BookCopyReservation> ReservedCopies
+    public IReadOnlyCollection<ReservedBookCopy> ReservedCopies
     {
         get => _reservedCopies.AsReadOnly();
         init => _reservedCopies = value.ToList();
@@ -46,7 +46,7 @@ internal sealed class Book : AggregateRoot<BookId>
 
         AvailableCopies -= 1;
 
-        var reservation = new BookCopyReservation(Guid.NewGuid(), Id, customerId);
+        var reservation = new ReservedBookCopy(Guid.NewGuid(), Id, customerId);
         _reservedCopies.Add(reservation);
         EnsureStockBalances();
 
@@ -102,7 +102,7 @@ internal sealed class Book : AggregateRoot<BookId>
     internal ushort GetAvailableCopies()
         => AvailableCopies;
 
-    private void RemoveReservation(BookCopyReservation reservedCopy)
+    private void RemoveReservation(ReservedBookCopy reservedCopy)
     {
         AvailableCopies = AvailableCopies += 1;
         _reservedCopies.Remove(reservedCopy);
@@ -117,7 +117,7 @@ internal sealed class Book : AggregateRoot<BookId>
         }
     }
 
-    private BookCopyReservation EnsureReservationExists(CustomerId customerId)
+    private ReservedBookCopy EnsureReservationExists(CustomerId customerId)
     {
         var reservationCopy = ReservedCopies.SingleOrDefault(r => r.CustomerId == customerId);
 

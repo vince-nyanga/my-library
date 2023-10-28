@@ -3,13 +3,13 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Domain.Entities;
 
-internal sealed class BookCopyReservation : Entity<BookReservationId>
+internal sealed class ReservedBookCopy : Entity<ReservedBookId>
 {
-    private BookCopyReservation()
+    private ReservedBookCopy()
     {
     }
 
-    internal BookCopyReservation(BookReservationId id, BookId bookId, CustomerId customerId)
+    internal ReservedBookCopy(ReservedBookId id, BookId bookId, CustomerId customerId)
     {
         Id = id;
         BookId = bookId;

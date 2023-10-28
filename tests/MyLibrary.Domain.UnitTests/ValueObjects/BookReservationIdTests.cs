@@ -14,7 +14,7 @@ public class BookReservationIdTests
         var value = Guid.Empty;
         
         // Act
-        var act = () => new BookReservationId(value);
+        var act = () => new ReservedBookId(value);
         
         // Assert
         act.Should().Throw<EmptyBookReservationIdException>();
@@ -27,7 +27,7 @@ public class BookReservationIdTests
         var value = Guid.NewGuid();
         
         // Act
-        var bookReservationId = new BookReservationId(value);
+        var bookReservationId = new ReservedBookId(value);
         
         // Assert
         bookReservationId.Value.Should().Be(value);

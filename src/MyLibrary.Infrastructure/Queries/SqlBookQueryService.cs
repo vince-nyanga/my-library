@@ -38,7 +38,7 @@ internal sealed class SqlBookQueryService : IBookQueryService
             .ToListAsync();
     }
 
-    public async ValueTask<IReadOnlyCollection<BookCopyReservationReadModel>> GetReservedBooksForCustomerAsync(
+    public async ValueTask<IReadOnlyCollection<ReservedBookCopyReadModel>> GetReservedBooksForCustomerAsync(
         string customerId)
     {
         return await _context.ReservedCopies.Include(b => b.Book)

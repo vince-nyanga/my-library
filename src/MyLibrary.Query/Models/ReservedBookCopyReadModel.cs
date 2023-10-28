@@ -1,6 +1,6 @@
 namespace MyLibrary.Query.Models;
 
-internal class BookCopyReservationReadModel
+internal class ReservedBookCopyReadModel
 {
     public Guid Id { get; init; }
     public Guid BookId { get; init; }

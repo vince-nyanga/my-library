@@ -26,7 +26,7 @@ internal sealed class WriteDbContext : DbContext
             
         var configuration = new WriteConfiguration();
         modelBuilder.ApplyConfiguration<Book>(configuration);
-        modelBuilder.ApplyConfiguration<BookCopyReservation>(configuration);
+        modelBuilder.ApplyConfiguration<ReservedBookCopy>(configuration);
         modelBuilder.ApplyConfiguration<BorrowedBookCopy>(configuration);
         modelBuilder.ApplyConfiguration<Customer>(configuration);
         modelBuilder.ApplyConfiguration<Notification>(configuration);

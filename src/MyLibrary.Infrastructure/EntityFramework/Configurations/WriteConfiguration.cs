@@ -5,7 +5,7 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Infrastructure.EntityFramework.Configurations;
 
-internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEntityTypeConfiguration<BookCopyReservation>, 
+internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEntityTypeConfiguration<ReservedBookCopy>, 
         IEntityTypeConfiguration<BorrowedBookCopy>, IEntityTypeConfiguration<Customer>, IEntityTypeConfiguration<Notification>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
@@ -32,11 +32,11 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         builder.ToTable("Books");
     }
 
-    public void Configure(EntityTypeBuilder<BookCopyReservation> builder)
+    public void Configure(EntityTypeBuilder<ReservedBookCopy> builder)
     {
         builder.HasKey(b => b.Id);
         builder.Property(b => b.Id)
-            .HasConversion(id => id.Value, id => new BookReservationId(id));
+            .HasConversion(id => id.Value, id => new ReservedBookId(id));
         
         builder.Property(b => b.BookId)
             .HasConversion(id => id.Value, id => new BookId(id));

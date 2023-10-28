@@ -20,4 +20,26 @@ internal static class Extensions
             NextAvailableCopyDate = book.BorrowedCopies.MinBy(c => c.DueDate)?.DueDate
         };
     }
+
+    public static BorrowedBook ToBorrowedBook(this BorrowedBookCopyReadModel borrowedBook)
+    {
+        return new()
+        {
+            Id = borrowedBook.Id,
+            Title = borrowedBook.Book.Title,
+            DueDate = borrowedBook.DueDate,
+            CustomerId = borrowedBook.CustomerId
+        };
+    }
+
+    public static ReservedBook ToReservedBook(this ReservedBookCopyReadModel reservedReservedBook)
+    {
+        return new ReservedBook()
+        {
+            Id = reservedReservedBook.Id,
+            Title = reservedReservedBook.Book.Title,
+            CustomerId = reservedReservedBook.CustomerId,
+            ExpiryDate = reservedReservedBook.DateReserved.AddHours(24) // TODO: this should be configurable
+        };
+    }
 }

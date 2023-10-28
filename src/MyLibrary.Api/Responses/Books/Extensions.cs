@@ -14,4 +14,24 @@ internal static class Extensions
             NextAvailableCopyDate = summary.NextAvailableCopyDate
         };
     }
+
+    public static ReservedBookResponse ToReservedBookResponse(this ReservedBook reservedBook)
+    {
+        return new()
+        {
+            Id = reservedBook.Id,
+            Title = reservedBook.Title,
+            ReservationExpiryDate = reservedBook.ExpiryDate
+        };
+    }
+
+    public static BorrowedBookResponse ToBorrowedBookResponse(this BorrowedBook borrowedBook)
+    {
+        return new()
+        {
+            Id = borrowedBook.Id,
+            Title = borrowedBook.Title,
+            DueDate = borrowedBook.DueDate
+        };
+    }
 }

@@ -8,7 +8,7 @@ internal sealed class ReadDbContext : DbContext
 {
     public DbSet<BookReadModel> Books { get; set; }
     public DbSet<BorrowedBookCopyReadModel> BorrowedBooks { get; set; }
-    public DbSet<BookCopyReservationReadModel> ReservedCopies { get; set; }
+    public DbSet<ReservedBookCopyReadModel> ReservedCopies { get; set; }
     public DbSet<CustomerReadModel> Customers { get; set; }
 
     public ReadDbContext(DbContextOptions<ReadDbContext> options)
@@ -22,7 +22,7 @@ internal sealed class ReadDbContext : DbContext
             
         var configuration = new ReadConfiguration();
         modelBuilder.ApplyConfiguration<BookReadModel>(configuration);
-        modelBuilder.ApplyConfiguration<BookCopyReservationReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<ReservedBookCopyReadModel>(configuration);
         modelBuilder.ApplyConfiguration<BorrowedBookCopyReadModel>(configuration);
         modelBuilder.ApplyConfiguration<CustomerReadModel>(configuration);
         modelBuilder.ApplyConfiguration<NotificationReadModel>(configuration);

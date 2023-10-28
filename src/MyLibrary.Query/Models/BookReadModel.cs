@@ -6,6 +6,6 @@ internal sealed class BookReadModel
     public string Title { get; init; }
     public ushort TotalCopies { get; set; }
     public ushort AvailableCopies { get; init; }
-    public IReadOnlyCollection<BookCopyReservationReadModel> ReservedCopies { get; init; }
+    public IReadOnlyCollection<ReservedBookCopyReadModel> ReservedCopies { get; init; }
     public IReadOnlyCollection<BorrowedBookCopyReadModel> BorrowedCopies { get; init; }
 }
