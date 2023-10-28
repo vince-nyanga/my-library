@@ -2,7 +2,7 @@ using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Domain.ValueObjects;
 
-public sealed record NotificationMessage
+internal sealed record NotificationMessage
 {
     public NotificationMessage(string value)
     {

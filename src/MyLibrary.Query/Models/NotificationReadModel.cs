@@ -1,6 +1,6 @@
 namespace MyLibrary.Query.Models;
 
-internal class NotificationReadModel
+internal sealed class NotificationReadModel
 {
     public Guid Id { get; init; }
     public string CustomerId { get; init; }
@@ -8,4 +8,12 @@ internal class NotificationReadModel
     public DateTimeOffset SentDate { get; init; }
     public bool IsRead { get; init; }
     public DateTimeOffset? DateRead { get; init; }
+}
+
+internal sealed class WatchedBookReadModel
+{
+    public Guid Id { get; init; }
+    public string CustomerId { get; init; }
+    public Guid BookId { get; init; }
+    public string BookTitle { get; init; }
 }

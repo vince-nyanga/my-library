@@ -2,6 +2,8 @@ using MyLibrary.Application.Abstractions.Auth;
 using MyLibrary.Application.Abstractions.Commands;
 using MyLibrary.Application.Abstractions.Repositories;
 using MyLibrary.Application.Exceptions;
+using MyLibrary.Domain.Entities;
+using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Application.Commands.Books;
 
@@ -41,9 +43,20 @@ internal sealed class ReserveBookHandler : ICommandHandler<ReserveBook>
             book.ReserveCopy(customer.Id);
             await _bookRepository.SaveAsync(book);
         }
+        catch (BookCopiesUnavailableException)
+        {
+            await WatchBookAsync(book, customer);
+            throw;
+        }
         catch (Exception e)
         {
             throw e.ToApplicationException();
         }
+    }
+
+    private async ValueTask WatchBookAsync(Book book, Customer customer)
+    {
+        customer.AddWatchedBook(book.Id, book.Title);
+        await _customerRepository.UpdateAsync(customer);
     }
 }

@@ -4,8 +4,12 @@ using MyLibrary.Query.Models;
 
 namespace MyLibrary.Infrastructure.EntityFramework.Configurations;
 
+/// <summary>
+/// NOTE: This is almost a 'violation' of Single Responsibility, depending on who you ask of course 😜.
+/// </summary>
 internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel>, IEntityTypeConfiguration<ReservedBookCopyReadModel>, 
-        IEntityTypeConfiguration<BorrowedBookCopyReadModel>, IEntityTypeConfiguration<CustomerReadModel>, IEntityTypeConfiguration<NotificationReadModel>
+        IEntityTypeConfiguration<BorrowedBookCopyReadModel>, IEntityTypeConfiguration<CustomerReadModel>, IEntityTypeConfiguration<NotificationReadModel>,
+        IEntityTypeConfiguration<WatchedBookReadModel>
 {
     public void Configure(EntityTypeBuilder<BookReadModel> builder)
     {
@@ -39,6 +43,10 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel
         builder.HasMany(c => c.Notifications)
             .WithOne()
             .HasForeignKey(n => n.CustomerId);
+
+        builder.HasMany(c => c.WatchedBooks)
+            .WithOne()
+            .HasForeignKey(w => w.CustomerId);
         
         builder.ToTable("Customers");
     }
@@ -47,5 +55,11 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BookReadModel
     {
         builder.HasKey(n => n.Id);
         builder.ToTable("Notifications");
+    }
+
+    public void Configure(EntityTypeBuilder<WatchedBookReadModel> builder)
+    {
+        builder.HasKey(w => w.Id);
+        builder.ToTable("WatchedBooks");
     }
 }

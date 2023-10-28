@@ -2,7 +2,7 @@ using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Domain.ValueObjects;
 
-public sealed record BookTitle
+internal sealed record BookTitle
 {
     public BookTitle(string value)
     {

@@ -5,8 +5,12 @@ using MyLibrary.Domain.ValueObjects;
 
 namespace MyLibrary.Infrastructure.EntityFramework.Configurations;
 
+/// <summary>
+/// NOTE: This is almost a 'violation' of Single Responsibility, depending on who you ask of course.
+/// </summary>
 internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEntityTypeConfiguration<ReservedBookCopy>, 
-        IEntityTypeConfiguration<BorrowedBookCopy>, IEntityTypeConfiguration<Customer>, IEntityTypeConfiguration<Notification>
+        IEntityTypeConfiguration<BorrowedBookCopy>, IEntityTypeConfiguration<Customer>, IEntityTypeConfiguration<Notification>,
+        IEntityTypeConfiguration<WatchedBook>
 {
     public void Configure(EntityTypeBuilder<Book> builder)
     {
@@ -78,6 +82,10 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
             .WithOne()
             .HasForeignKey(c => c.CustomerId);
 
+        builder.HasMany(c => c.WatchedBooks)
+            .WithOne(w => w.Customer)
+            .HasForeignKey(w => w.CustomerId);
+
         builder.ToTable("Customers");
     }
 
@@ -95,6 +103,21 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<Book>, IEnti
         
         
         builder.ToTable("Notifications");
+    }
+    
+    public void Configure(EntityTypeBuilder<WatchedBook> builder)
+    {
+        builder.HasKey(w => w.Id);
+        builder.Property(w => w.Id)
+            .HasConversion(id => id.Value, id => new WatchedBookId(id));
+        
+        builder.Property(n => n.CustomerId)
+            .HasConversion(id => id.Value, id => new CustomerId(id));
+        
+        builder.Property(n => n.BookId)
+            .HasConversion(id => id.Value, id => new BookId(id));
+
+        builder.ToTable("WatchedBooks");
     }
 
     private static IEnumerable<Book> GetBookSeedData()

@@ -13,6 +13,7 @@ internal sealed class WriteDbContext : DbContext
 
     public DbSet<Book> Books { get; set; }
     public DbSet<Customer> Customers { get; set; }
+    public DbSet<WatchedBook> WatchedBooks { get; set; }
     
     public WriteDbContext(DbContextOptions<WriteDbContext> options, ChannelWriter<IDomainEvent> channelWriter)
         : base(options)
@@ -30,6 +31,7 @@ internal sealed class WriteDbContext : DbContext
         modelBuilder.ApplyConfiguration<BorrowedBookCopy>(configuration);
         modelBuilder.ApplyConfiguration<Customer>(configuration);
         modelBuilder.ApplyConfiguration<Notification>(configuration);
+        modelBuilder.ApplyConfiguration<WatchedBook>(configuration);
     }
     
     public async Task SaveChangesAndDispatchEventsAsync()

@@ -3,7 +3,7 @@ using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Domain.ValueObjects;
 
-public sealed record EmailAddress
+internal sealed record EmailAddress
 {
     // naive email address regex pattern. Not for use in production.
     private const string Pattern = @"^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$";

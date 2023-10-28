@@ -26,6 +26,7 @@ internal sealed class ReadDbContext : DbContext
         modelBuilder.ApplyConfiguration<BorrowedBookCopyReadModel>(configuration);
         modelBuilder.ApplyConfiguration<CustomerReadModel>(configuration);
         modelBuilder.ApplyConfiguration<NotificationReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<WatchedBookReadModel>(configuration);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

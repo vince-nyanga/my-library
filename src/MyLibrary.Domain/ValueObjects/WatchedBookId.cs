@@ -2,9 +2,9 @@ using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Domain.ValueObjects;
 
-internal sealed record BookId
+internal sealed record WatchedBookId
 {
-    public BookId(Guid value)
+    public WatchedBookId(Guid value)
     {
         if (value == Guid.Empty)
         {
@@ -15,9 +15,9 @@ internal sealed record BookId
 
     public Guid Value { get; }
 
-    public static implicit operator Guid(BookId bookId)
+    public static implicit operator Guid(WatchedBookId bookId)
         => bookId.Value;
 
-    public static implicit operator BookId(Guid value)
+    public static implicit operator WatchedBookId(Guid value)
         => new(value);
 }

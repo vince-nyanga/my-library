@@ -2,7 +2,7 @@ using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Domain.ValueObjects;
 
-public sealed record BorrowedBookId
+internal sealed record BorrowedBookId
 {
     public BorrowedBookId(Guid value)
     {

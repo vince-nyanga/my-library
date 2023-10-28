@@ -57,14 +57,14 @@ internal sealed class Book : AggregateRoot<BookId>
     {
         var reservedCopy = EnsureReservationExists(customerId);
         RemoveReservation(reservedCopy);
-        AddEvent(new BookReservationExpired(Title, reservedCopy.CustomerId));
+        AddEvent(new BookReservationExpired(Id, Title, reservedCopy.CustomerId));
     }
 
     public void CancelReservation(CustomerId customerId)
     {
         var reservation = EnsureReservationExists(customerId);
         RemoveReservation(reservation);
-        AddEvent(new BookReservationCancelled(Title, customerId));
+        AddEvent(new BookReservationCancelled(Id, Title, customerId));
     }
     
     public void BorrowCopy(CustomerId customerId, DateOnly dueDate)
@@ -96,7 +96,7 @@ internal sealed class Book : AggregateRoot<BookId>
         EnsureStockBalances();
         
         copy.Return();
-        AddEvent(new BookCopyReturned(Title, copy.CustomerId));
+        AddEvent(new BookCopyReturned(Id, Title, copy.CustomerId));
     }
 
     internal ushort GetAvailableCopies()

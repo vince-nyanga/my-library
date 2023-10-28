@@ -9,10 +9,8 @@ internal sealed class BookCopyBorrowedHandler : IDomainEventHandler<BookCopyBorr
     private readonly ICustomerRepository _repository;
 
     public BookCopyBorrowedHandler(ICustomerRepository repository)
-    {
-        _repository = repository;
-    }
-
+        => _repository = repository;
+    
     public async ValueTask HandleAsync(BookCopyBorrowed domainEvent)
     {
         var customer = await _repository.GetAsync(domainEvent.CustomerId);

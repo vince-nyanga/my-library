@@ -2,7 +2,7 @@ using MyLibrary.Domain.Exceptions;
 
 namespace MyLibrary.Domain.ValueObjects;
 
-public sealed record NotificationId
+internal sealed record NotificationId
 {
     public NotificationId(Guid value)
     {

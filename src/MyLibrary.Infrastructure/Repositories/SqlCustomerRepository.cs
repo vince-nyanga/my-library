@@ -33,4 +33,21 @@ internal sealed class SqlCustomerRepository : ICustomerRepository
         _context.Customers.Update(customer);
         await _context.SaveChangesAndDispatchEventsAsync();
     }
+
+    public async ValueTask<IReadOnlyCollection<WatchedBook>> GetWatchedBooksAsync(BookId bookId)
+    {
+        return await _context.WatchedBooks.Include(b => b.Customer)
+            .Where(b => b.BookId == bookId)
+            .ToListAsync();
+    }
+
+    public async ValueTask UpdateManyAsync(List<Customer> customers)
+    {
+        foreach (var customer in customers)
+        {
+            _context.Customers.Update(customer);
+        }
+
+        await _context.SaveChangesAndDispatchEventsAsync();
+    }
 }

@@ -8,4 +8,6 @@ internal interface ICustomerRepository
     ValueTask<Customer> GetAsync(CustomerId id);
     ValueTask AddAsync(Customer customer);
     ValueTask UpdateAsync(Customer customer);
+    ValueTask<IReadOnlyCollection<WatchedBook>> GetWatchedBooksAsync(BookId bookId);
+    ValueTask UpdateManyAsync(List<Customer> customers);
 }

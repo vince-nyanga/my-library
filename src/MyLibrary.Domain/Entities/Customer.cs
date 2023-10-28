@@ -8,7 +8,8 @@ namespace MyLibrary.Domain.Entities;
 internal sealed class Customer : AggregateRoot<CustomerId>
 {
     private readonly List<Notification> _notifications = new();
-    
+    private readonly List<WatchedBook> _watchedBooks = new();
+
     private Customer()
     {
     }
@@ -27,6 +28,12 @@ internal sealed class Customer : AggregateRoot<CustomerId>
     {
         get => _notifications.AsReadOnly();
         init => _notifications = value.ToList();
+    }
+
+    public IReadOnlyCollection<WatchedBook> WatchedBooks
+    {
+        get => _watchedBooks.AsReadOnly();
+        init => _watchedBooks = value.ToList();
     }
 
     public void UpdateName(CustomerName name)
@@ -58,6 +65,27 @@ internal sealed class Customer : AggregateRoot<CustomerId>
         foreach (var notification in UnreadNotifications)
         {
             MarkAsRead(notification);
+        }
+    }
+
+    public void AddWatchedBook(BookId bookId, BookTitle bookTitle)
+    {
+        if (_watchedBooks.Any(b => b.BookId == bookId))
+        {
+            return;
+        }
+        
+        _watchedBooks.Add(new WatchedBook(Guid.NewGuid(), Id, bookId, bookTitle));
+    }
+
+    public void NotifyWatchedBookAvailability(BookId bookId)
+    {
+        var watchedBook = _watchedBooks.SingleOrDefault(b => b.BookId == bookId);
+
+        if (watchedBook is not null)
+        {
+            _watchedBooks.Remove(watchedBook);
+            _notifications.Add(new Notification(Guid.NewGuid(), Id, $"The book you wanted: '{watchedBook.BookTitle}' is now available."));
         }
     }
 

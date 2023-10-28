@@ -5,24 +5,18 @@ using MyLibrary.Domain.Events;
 
 namespace MyLibrary.Application.DomainEventHandlers;
 
-internal sealed class BookCopyReturnedHandler : IDomainEventHandler<BookCopyReturned>
+internal sealed class BookReservationCancelledHandler : IDomainEventHandler<BookReservationCancelled>
 {
     private readonly ICustomerRepository _repository;
 
-    public BookCopyReturnedHandler(ICustomerRepository repository)
-    {
-        _repository = repository;
-    }
+    public BookReservationCancelledHandler(ICustomerRepository repository)
+        => _repository = repository;
 
-    public async ValueTask HandleAsync(BookCopyReturned domainEvent)
+    public async ValueTask HandleAsync(BookReservationCancelled domainEvent)
     {
-        var customer = await _repository.GetAsync(domainEvent.CustomerId);
-        customer.SendNotification(
-            $"You have returned a copy of {domainEvent.BookTitle}.");
-
         var watchedBooks = await _repository.GetWatchedBooksAsync(domainEvent.BookId);
 
-        var updatedCustomers = new List<Customer>() { customer };
+        var updatedCustomers = new List<Customer>();
         foreach (var watchedBook in watchedBooks)
         {
             var watchingCustomer = watchedBook.Customer;
