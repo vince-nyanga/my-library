@@ -19,4 +19,14 @@ internal static class Extensions
             TotalUnreadNotifications = (ushort)customer.Notifications.Count
         };
     }
+
+    public static Notification ToNotification(this NotificationReadModel notification)
+    {
+        return new()
+        {
+            Id = notification.Id,
+            Message = notification.Message,
+            SentDate = notification.SentDate
+        };
+    }
 }

@@ -12,6 +12,7 @@ internal sealed class Notification : Entity<NotificationId>
         CustomerId = customerId;
         Message = message;
         IsRead = false;
+        SentDate = DateTimeOffset.UtcNow;
     }
 
     public CustomerId CustomerId { get; init; }
