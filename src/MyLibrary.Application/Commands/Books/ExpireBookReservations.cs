@@ -24,15 +24,10 @@ internal sealed class ExpireBookReservationsHandler : ICommandHandler<ExpireBook
         
         foreach (var book in books)
         {
-            var list = book.ReservedCopies.Where(c => c.ExpiryDate <= DateTime.UtcNow).ToList();
-
-            foreach (var c in list)
-            {
-                book.ExpireReservation(c.CustomerId);
-            }
-
-            await _bookRepository.SaveAsync(book);
+            book.ExpireAll();
         }
+
+        await _bookRepository.SaveManyAsync(books);
     }
 }
 

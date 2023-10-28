@@ -98,6 +98,17 @@ internal sealed class Book : AggregateRoot<BookId>
         copy.Return();
         AddEvent(new BookCopyReturned(Id, Title, copy.CustomerId));
     }
+    
+    public void ExpireAll()
+    {
+        var customerIds = _reservedCopies.Where(e => e.ExpiryDate <= DateTime.UtcNow)
+            .Select(e => new CustomerId(e.CustomerId)).ToList();
+
+        foreach (var customerId in customerIds)
+        {
+            ExpireReservation(customerId);
+        }
+    }
 
     internal ushort GetAvailableCopies()
         => AvailableCopies;
