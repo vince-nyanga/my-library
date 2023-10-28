@@ -39,68 +39,54 @@ internal sealed class Book : AggregateRoot<BookId>
         init => _reservedCopies = value.ToList();
     }
 
-    public void ReserveCopy(Customer customer)
+    public void ReserveCopy(CustomerId customerId)
     {
-        EnsureCustomerHasNotBorrowedOrReservedACopy(customer.Id);
+        EnsureCustomerHasNotBorrowedOrReservedACopy(customerId);
         EnsureAvailableCopies();
 
         AvailableCopies -= 1;
 
-        var reservation = new BookCopyReservation(Guid.NewGuid(), Id, customer.Id);
+        var reservation = new BookCopyReservation(Guid.NewGuid(), Id, customerId);
         _reservedCopies.Add(reservation);
         EnsureStockBalances();
 
-        AddEvent(new BookReservationMade(this, customer));
+        AddEvent(new BookReservationMade(Title,customerId));
     }
 
-    public void ExpireReservation(BookReservationId reservationId)
+    public void ExpireReservation(CustomerId customerId)
     {
-        var reservedCopy = EnsureReservationExists(reservationId);
+        var reservedCopy = EnsureReservationExists(customerId);
         RemoveReservation(reservedCopy);
-        AddEvent(new BookReservationExpired(this, reservedCopy));
+        AddEvent(new BookReservationExpired(Title, reservedCopy.CustomerId));
     }
 
-    public void CancelReservation(BookReservationId reservationId)
+    public void CancelReservation(CustomerId customerId)
     {
-        var reservedCopy = EnsureReservationExists(reservationId);
-        RemoveReservation(reservedCopy);
-        AddEvent(new BookReservationCancelled(this, reservedCopy));
+        var reservation = EnsureReservationExists(customerId);
+        RemoveReservation(reservation);
+        AddEvent(new BookReservationCancelled(Title, customerId));
     }
     
-    public void BorrowCopy(Customer customer, DateOnly dueDate)
+    public void BorrowCopy(CustomerId customerId, DateOnly dueDate)
     {
-        var possibleReservation = ReservedCopies.SingleOrDefault(r => r.CustomerId == customer.Id);
+        var possibleReservation = ReservedCopies.SingleOrDefault(r => r.CustomerId == customerId);
         if (possibleReservation is not null)
         {
             RemoveReservation(possibleReservation);
         }
-        EnsureCustomerHasNotBorrowedOrReservedACopy(customer.Id);
+        
+        EnsureCustomerHasNotBorrowedOrReservedACopy(customerId);
         EnsureAvailableCopies();
         EnsureDueDateNotInThePast(dueDate);
 
         AvailableCopies -= 1;
-        var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), customer.Id, Id, dueDate);
+        var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), customerId, Id, dueDate);
         _borrowedCopies.Add(borrowedBookCopy);
         EnsureStockBalances();
 
-        AddEvent(new BookCopyBorrowed(Title, customer.Id, dueDate));
+        AddEvent(new BookCopyBorrowed(Title, customerId, dueDate));
     }
-
-    public void BorrowCopy(BookReservationId reservationId, DateOnly dueDate)
-    {
-        var reservation = EnsureReservationExists(reservationId);
-        
-        EnsureCustomerHasNotBorrowedCopy(reservation.CustomerId);
-        EnsureDueDateNotInThePast(dueDate);
-
-        var borrowedBookCopy = new BorrowedBookCopy(Guid.NewGuid(), reservation.CustomerId, Id, dueDate);
-        _borrowedCopies.Add(borrowedBookCopy);
-        _reservedCopies.Remove(reservation);
-        EnsureStockBalances();
-
-        AddEvent(new ReservedBookBorrowed(this, reservation));
-    }
-
+    
     public void ReturnCopy(BorrowedBookId borrowedBookId)
     {
         var copy = EnsureBorrowedCopyExists(borrowedBookId);
@@ -131,13 +117,13 @@ internal sealed class Book : AggregateRoot<BookId>
         }
     }
 
-    private BookCopyReservation EnsureReservationExists(BookReservationId reservationId)
+    private BookCopyReservation EnsureReservationExists(CustomerId customerId)
     {
-        var reservationCopy = ReservedCopies.SingleOrDefault(r => r.Id == reservationId);
+        var reservationCopy = ReservedCopies.SingleOrDefault(r => r.CustomerId == customerId);
 
         if (reservationCopy is null)
         {
-            throw new BookReservationNotFoundException(Id, reservationId);
+            throw new BookReservationNotFoundException(Id, customerId);
         }
 
         return reservationCopy;

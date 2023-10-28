@@ -1,6 +1,5 @@
 using MyLibrary.Domain.Abstractions;
-using MyLibrary.Domain.Entities;
 
 namespace MyLibrary.Domain.Events;
 
-internal sealed record BookReservationCancelled(Book Book, BookCopyReservation Reservation) : IDomainEvent;
+internal sealed record BookReservationCancelled(string BookTitle, string CustomerName) : IDomainEvent;

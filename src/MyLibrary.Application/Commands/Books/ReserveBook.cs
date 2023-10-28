@@ -5,41 +5,40 @@ using MyLibrary.Application.Exceptions;
 
 namespace MyLibrary.Application.Commands.Books;
 
-public record BorrowBook(Guid BookId, DateOnly ReturnDate) : ICommand;
+public sealed record ReserveBook(Guid BookId) : ICommand;
 
-internal sealed class BorrowBookHandler : ICommandHandler<BorrowBook>
+internal sealed class ReserveBookHandler : ICommandHandler<ReserveBook>
 {
     private readonly IUserContextProvider _userContextProvider;
     private readonly ICustomerRepository _customerRepository;
     private readonly IBookRepository _bookRepository;
 
-    public BorrowBookHandler(
-        IUserContextProvider userContextProvider, ICustomerRepository customerRepository, IBookRepository bookRepository)
+    public ReserveBookHandler(IUserContextProvider userContextProvider, ICustomerRepository customerRepository, IBookRepository bookRepository)
     {
         _userContextProvider = userContextProvider;
         _customerRepository = customerRepository;
         _bookRepository = bookRepository;
     }
 
-    public async ValueTask HandleAsync(BorrowBook command)
+    public async ValueTask HandleAsync(ReserveBook command)
     {
         var customer = await _customerRepository.GetAsync(_userContextProvider.UserId);
         if (customer is null)
         {
             throw new EntityNotFoundException(
-                $"There is no record for customer with Id {_userContextProvider.UserId}. Please update your profile");
+                $"There is no record for customer with ID {_userContextProvider.UserId}. Please update your profile");
         }
 
         var book = await _bookRepository.GetAsync(command.BookId);
         if (book is null)
         {
             throw new EntityNotFoundException(
-                $"Book with id {command.BookId} does not exist");
+                $"Book with ID {command.BookId} does not exist");
         }
 
         try
         {
-            book.BorrowCopy(customer.Id, command.ReturnDate);
+            book.ReserveCopy(customer.Id);
             await _bookRepository.SaveAsync(book);
         }
         catch (Exception e)

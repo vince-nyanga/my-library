@@ -17,12 +17,14 @@ internal sealed class ReturnBookController : ControllerBase
     }
 
     /// <summary>
-    /// Returns a book to the library
+    /// Returns a book borrowed by the logged in user to the library
     /// </summary>
     /// <param name="id">The book ID</param>
     [HttpPost("{id:guid}/return", Name = nameof(ReturnBookAsync))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
     [SwaggerOperation(Tags = new[] { "Books" })]
     public async Task<IActionResult> ReturnBookAsync(Guid id)

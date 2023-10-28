@@ -18,7 +18,7 @@ public class BookTests
         var customer = CreateCustomer();
         
         // Act
-        book.ReserveCopy(customer);
+        book.ReserveCopy(customer.Id);
         
         // Assert
         book.GetAvailableCopies().Should().Be(1);
@@ -33,7 +33,7 @@ public class BookTests
         var customer = CreateCustomer();
         
         // Act
-        var reserveCopy = () => book.ReserveCopy(customer);
+        var reserveCopy = () => book.ReserveCopy(customer.Id);
         
         // Assert
         reserveCopy.Should().Throw<BookCopiesUnavailableException>();
@@ -46,10 +46,10 @@ public class BookTests
         // Arrange
         var book = CreateBook(1);
         var customer = CreateCustomer();
-        book.ReserveCopy(customer);
+        book.ReserveCopy(customer.Id);
         
         // Act
-        var reserveCopy = () => book.ReserveCopy(customer);
+        var reserveCopy = () => book.ReserveCopy(customer.Id);
         
         // Assert
         reserveCopy.Should().Throw<CustomerAlreadyReservedOrBorrowedBookException>();
@@ -61,10 +61,10 @@ public class BookTests
         // Arrange
         var book = CreateBook(2);
         var customer = CreateCustomer();
-        book.BorrowCopy(customer, DateOnly.FromDateTime(DateTime.Today.AddDays(1)));
+        book.BorrowCopy(customer.Id, DateOnly.FromDateTime(DateTime.Today.AddDays(1)));
         
         // Act
-        var reserveCopy = () => book.ReserveCopy(customer);
+        var reserveCopy = () => book.ReserveCopy(customer.Id);
         
         // Assert
         reserveCopy.Should().Throw<CustomerAlreadyReservedOrBorrowedBookException>();
@@ -78,7 +78,7 @@ public class BookTests
         var reservationId = Guid.NewGuid();
         
         // Act
-        var expireReservation = () => book.ExpireReservation(reservationId);
+        var expireReservation = () => book.ExpireReservation(new MnemonicString().GetValue());
         
         // Assert
         expireReservation.Should().Throw<BookReservationNotFoundException>();
@@ -91,11 +91,10 @@ public class BookTests
         // Arrange
         var book = CreateBook(2);
         var customer = CreateCustomer();
-        book.ReserveCopy(customer);
-        var reservationId = book.ReservedCopies.Single().Id;
+        book.ReserveCopy(customer.Id);
         
         // Act
-        book.ExpireReservation(reservationId);
+        book.ExpireReservation(customer.Id);
         
         // Assert
         book.GetAvailableCopies().Should().Be(2);
@@ -107,10 +106,9 @@ public class BookTests
     {
         // Arrange
         var book = CreateBook(2);
-        var reservationId = Guid.NewGuid();
         
         // Act
-        var expireReservation = () => book.CancelReservation(reservationId);
+        var expireReservation = () => book.CancelReservation(new MnemonicString().GetValue());
         
         // Assert
         expireReservation.Should().Throw<BookReservationNotFoundException>();
@@ -123,11 +121,10 @@ public class BookTests
         // Arrange
         var book = CreateBook(2);
         var customer = CreateCustomer();
-        book.ReserveCopy(customer);
-        var reservationId = book.ReservedCopies.Single().Id;
+        book.ReserveCopy(customer.Id);
         
         // Act
-        book.CancelReservation(reservationId);
+        book.CancelReservation(customer.Id);
         
         // Assert
         book.GetAvailableCopies().Should().Be(2);
@@ -143,7 +140,7 @@ public class BookTests
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
         
         // Act
-        book.BorrowCopy(customer, dueDate);
+        book.BorrowCopy(customer.Id, dueDate);
         
         // Assert
         book.GetAvailableCopies().Should().Be(1);
@@ -157,10 +154,10 @@ public class BookTests
         var book = CreateBook(2);
         var customer = CreateCustomer();
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
-        book.BorrowCopy(customer, dueDate);
+        book.BorrowCopy(customer.Id, dueDate);
         
         // Act
-        var borrowCopy = () => book.BorrowCopy(customer, dueDate);
+        var borrowCopy = () => book.BorrowCopy(customer.Id, dueDate);
         
         // Assert
         borrowCopy.Should().Throw<CustomerAlreadyReservedOrBorrowedBookException>();
@@ -175,7 +172,7 @@ public class BookTests
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
         
         // Act
-        var borrowCopy = () => book.BorrowCopy(customer, dueDate);
+        var borrowCopy = () => book.BorrowCopy(customer.Id, dueDate);
         
         // Assert
         borrowCopy.Should().Throw<BookCopiesUnavailableException>();
@@ -192,44 +189,7 @@ public class BookTests
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
         
         // Act
-        var borrowCopy = () => book.BorrowCopy(customer, dueDate);
-        
-        // Assert
-        borrowCopy.Should().Throw<DueDateInThePastException>();
-        book.Events.Should().BeEmpty();
-    }
-    
-    [Fact]
-    public void BorrowCopy_FromReservation_WhenCopiesAreAvailable_ShouldReserveACopy()
-    {
-        // Arrange
-        var book = CreateBook(2);
-        var customer = CreateCustomer();
-        book.ReserveCopy(customer);
-        var reservationId = book.ReservedCopies.Single().Id;
-        var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
-        
-        // Act
-        book.BorrowCopy(reservationId, dueDate);
-        
-        // Assert
-        book.GetAvailableCopies().Should().Be(1);
-        book.Events.FindRaisedEvent<ReservedBookBorrowed>().Should().NotBeNull();
-    }
-
-    [Fact]
-    public void BorrowCopy_FromReservation_WhenDueDateIsInThePast_ShouldThrowException()
-    {
-        // Arrange
-        var book = CreateBook(2);
-        var customer = CreateCustomer();
-        book.ReserveCopy(customer);
-        book.ClearEvents();
-        var reservationId = book.ReservedCopies.Single().Id;
-        var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
-        
-        // Act
-        var borrowCopy = () => book.BorrowCopy(reservationId, dueDate);
+        var borrowCopy = () => book.BorrowCopy(customer.Id, dueDate);
         
         // Assert
         borrowCopy.Should().Throw<DueDateInThePastException>();
@@ -258,7 +218,7 @@ public class BookTests
         var book = CreateBook(2);
         var customer = CreateCustomer();
         var dueDate = DateOnly.FromDateTime(DateTime.Today.AddDays(7));
-        book.BorrowCopy(customer, dueDate);
+        book.BorrowCopy(customer.Id, dueDate);
         var borrowedBookId = book.CopiesNotReturned.Single().Id;
         
         // Act
