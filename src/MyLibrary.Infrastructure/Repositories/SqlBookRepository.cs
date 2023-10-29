@@ -36,7 +36,7 @@ internal sealed class SqlBookRepository : IBookRepository
     public async ValueTask<IReadOnlyCollection<Book>> GetWithExpiredReservationsAsync()
     {
         return await _context.Books
-            .Distinct()
+            .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
             .Include(b => b.ReservedCopies)
             .Where(b => b.ReservedCopies.Select(c => c.ExpiryDate < DateTime.UtcNow).Any())
             .ToListAsync();
