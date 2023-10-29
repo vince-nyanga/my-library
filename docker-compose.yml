@@ -1,0 +1,41 @@
+﻿version: "3"
+services:
+  mylibrary:
+    image: mylibrary
+    build:
+      context: .
+      dockerfile: src/MyLibrary.Api/Dockerfile
+    ports:
+      - '5261:80'
+    networks:
+      - api
+    environment:
+      ASPNETCORE_ENVIRONMENT: 'Docker'
+      ConnectionStrings__Default: 'Host=database;Database=MyLibrary;Username=postgres;Password=postgres'
+    env_file:
+      - .env
+    depends_on: 
+      database:
+        condition: service_healthy
+    restart: on-failure
+  
+  database:
+    image: 'postgres:latest'
+    ports:
+      - '5432:5432'
+    networks:
+      - api
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - ./my-library-data/:/var/lib/postgresql/data/
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+        
+networks:
+  api:
+        

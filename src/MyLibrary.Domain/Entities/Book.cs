@@ -101,7 +101,7 @@ internal sealed class Book : AggregateRoot<BookId>
     
     public void ExpireAll()
     {
-        var customerIds = _reservedCopies.Where(e => e.ExpiryDate <= DateTime.UtcNow)
+        var customerIds = _reservedCopies.Where(e => e.ExpiryDate <= DateTimeOffset.UtcNow)
             .Select(e => new CustomerId(e.CustomerId)).ToList();
 
         foreach (var customerId in customerIds)

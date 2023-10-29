@@ -20,15 +20,6 @@ internal sealed class BorrowBookController : ControllerBase
     /// </summary>
     /// <param name="id">The book ID</param>
     /// <param name="request">The request.</param>
-    /// <remarks>
-    ///
-    /// Sample request
-    ///
-    ///     POST
-    ///     {
-    ///         "returnDate": "2023-12-25"
-    ///     }
-    /// </remarks>
     [HttpPost("{id:guid}/borrow", Name = nameof(BorrowBookAsync))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]

@@ -19,16 +19,6 @@ internal sealed class UpdateProfileController : ControllerBase
     /// Updates the logged in user's profile.
     /// </summary>
     /// <param name="request">The request.</param>
-    /// <remarks>
-    /// 
-    /// Sample request:
-    ///
-    ///     POST
-    ///     {
-    ///         "fullName": "John Doe",
-    ///         "emailAddress": "john@honesdev.com"
-    ///     }
-    /// </remarks>
     [HttpPost(Name = nameof(UpdateProfileAsync))]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]

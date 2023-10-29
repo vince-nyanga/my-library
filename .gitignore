@@ -481,3 +481,6 @@ $RECYCLE.BIN/
 
 # .env
 .env
+
+# database data
+my-library-data/

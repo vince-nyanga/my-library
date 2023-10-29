@@ -1,0 +1,892 @@
+openapi: 3.0.1
+info:
+  title: My Library API
+  description: REST API for My Library
+  version: v1
+paths:
+  /api/books:
+    post:
+      tags:
+        - Books
+      summary: Adds a new book to the library.
+      operationId: AddBookAsync
+      requestBody:
+        description: The request containing new book details.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddBookRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/AddBookRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/AddBookRequest"
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "403":
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+    get:
+      tags:
+        - Books
+      summary: Gets all books in the library.
+      operationId: GetAllBooksAsync
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  "/api/books/{id}/borrow":
+    post:
+      tags:
+        - Books
+      summary: Borrows a book for the logged in user.
+      operationId: BorrowBookAsync
+      parameters:
+        - name: id
+          in: path
+          description: The book ID
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: The request.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BorrowBookRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/BorrowBookRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/BorrowBookRequest"
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  "/api/books/{id}/cancel-reservation":
+    post:
+      tags:
+        - Books
+      summary: Cancels the logged in user's reservation.
+      operationId: CancelReservationAsync
+      parameters:
+        - name: id
+          in: path
+          description: The book ID
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/books/own/borrowed:
+    get:
+      tags:
+        - Books
+      summary: Gets a list of the logged in user's borrowed books
+      operationId: GetOwnBorrowedBooksAsync
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BorrowedBookResponse"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BorrowedBookResponse"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BorrowedBookResponse"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/books/own/reserved:
+    get:
+      tags:
+        - Books
+      summary: Gets a list of the logged in user's reserved books.
+      operationId: GetOwnReservedBooksAsync
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReservedBookResponse"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReservedBookResponse"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReservedBookResponse"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/notifications/own/unread:
+    get:
+      tags:
+        - Notifications
+      summary: Gets unread notifications for the logged in user.
+      operationId: GetOwnUnreadNotificationsAsync
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NotificationResponse"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NotificationResponse"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NotificationResponse"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/profiles/own:
+    get:
+      tags:
+        - Customers
+      summary: Gets the profile of the logged in user.
+      operationId: GetOwnProfileAsync
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  "/api/notifications/own/{id}/mark-as-read":
+    post:
+      tags:
+        - Notifications
+      summary: Marks a notification as read.
+      operationId: MarkOwnNotificationAsReadAsync
+      parameters:
+        - name: id
+          in: path
+          description: The notification ID.
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/notifications/own/mark-as-read:
+    post:
+      tags:
+        - Notifications
+      summary: Marks all of the logged in users' notifications as read.
+      operationId: MarkOwnNotificationsAsReadAsync
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  "/api/books/{id}/reserve":
+    post:
+      tags:
+        - Books
+      summary: Reserves a book for the logged in user.
+      operationId: ReserveBookAsync
+      parameters:
+        - name: id
+          in: path
+          description: The book ID
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  "/api/books/{id}/return":
+    post:
+      tags:
+        - Books
+      summary: Returns a book borrowed by the logged in user to the library
+      operationId: ReturnBookAsync
+      parameters:
+        - name: id
+          in: path
+          description: The book ID
+          required: true
+          style: simple
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "409":
+          description: Conflict
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          description: Server Error
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/books/search:
+    post:
+      tags:
+        - Books
+      summary: Searches for books by title.
+      operationId: SearchBooksByTitleAsync
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SearchBookByTitleRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/SearchBookByTitleRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/SearchBookByTitleRequest"
+      responses:
+        "200":
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookResponse"
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+  /api/profile:
+    post:
+      tags:
+        - Customers
+      summary: Updates the logged in user's profile.
+      operationId: UpdateProfileAsync
+      requestBody:
+        description: The request.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+          text/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+          application/*+json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+            text/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+components:
+  schemas:
+    AddBookRequest:
+      required:
+        - id
+        - title
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Required: The book ID."
+          format: uuid
+          example: EABAA778-F8F2-4491-B80D-F9B5B15A0237
+        title:
+          minLength: 1
+          type: string
+          description: "Required: The book title."
+          example: The Green Moon by John Doe
+        numberOfCopies:
+          maximum: 1000
+          minimum: 1
+          type: integer
+          description: The number of copies. Should be between 1 and 1000.
+          format: int32
+          example: 18
+      additionalProperties: false
+    BookResponse:
+      required:
+        - id
+        - title
+      type: object
+      properties:
+        id:
+          type: string
+          description: The book id.
+          format: uuid
+          example: EABAA778-F8F2-4491-B80D-F9B5B15A0237
+        title:
+          minLength: 1
+          type: string
+          description: The book title.
+          example: The Green Moon by John Doe
+        availableCopies:
+          type: integer
+          description: Total copies available in the library at the moment.
+          format: int32
+          example: 17
+        nextAvailableCopyDate:
+          type: string
+          description: The closest date when a borrowed copy will be returned.
+          format: date
+          nullable: true
+          example: "2023-12-25"
+      additionalProperties: false
+    BorrowBookRequest:
+      type: object
+      properties:
+        returnDate:
+          type: string
+          description: The date on which the customer expects to return the book.
+          format: date
+          example: "2023-12-25"
+      additionalProperties: false
+    BorrowedBookResponse:
+      required:
+        - title
+      type: object
+      properties:
+        id:
+          type: string
+          description: The book id.
+          format: uuid
+          example: EABAA778-F8F2-4491-B80D-F9B5B15A0237
+        title:
+          minLength: 1
+          type: string
+          description: The book title.
+          example: The Green Moon by John Doe
+        dueDate:
+          type: string
+          description: The date by which the book should be returned.
+          format: date
+          example: "2023-12-25"
+      additionalProperties: false
+    NotificationResponse:
+      required:
+        - message
+      type: object
+      properties:
+        id:
+          type: string
+          description: The notification ID
+          format: uuid
+          example: 4DAFDD3F-CBFE-4412-8690-15D25E771E13
+        message:
+          minLength: 1
+          type: string
+          description: The notification message
+          example: Your reservation for The Green Moon by John Doe has expired.
+        sentDate:
+          type: string
+          description: The date and time the notification was sent.
+          format: date-time
+          example: "2023-12-25T06:00:00.000Z"
+      additionalProperties: false
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: {}
+    ProfileResponse:
+      required:
+        - emailAddress
+        - fullName
+      type: object
+      properties:
+        fullName:
+          minLength: 1
+          type: string
+          description: The user's full name.
+          example: John Doe
+        emailAddress:
+          minLength: 1
+          type: string
+          description: The user's email address.
+          example: john@email.com
+        totalUnreadNotifications:
+          type: integer
+          description: The user's total unread notifications
+          format: int32
+          example: 1
+        totalBorrowedBooks:
+          type: integer
+          description: The number of borrowed books the user has not returned yet.
+          format: int32
+          example: 1
+        totalReservedBooks:
+          type: integer
+          description: The number of books the user has reserved.
+          format: int32
+          example: 0
+      additionalProperties: false
+    ReservedBookResponse:
+      required:
+        - title
+      type: object
+      properties:
+        id:
+          type: string
+          description: The book id.
+          format: uuid
+          example: EABAA778-F8F2-4491-B80D-F9B5B15A0237
+        title:
+          minLength: 1
+          type: string
+          description: The book title.
+          example: The Green Moon by John Doe
+        reservationExpiryDate:
+          type: string
+          description: The date and time on which the reservation will expire.
+          format: date-time
+          example: "2023-12-25T06:00:00.000Z"
+      additionalProperties: false
+    SearchBookByTitleRequest:
+      required:
+        - searchTerm
+      type: object
+      properties:
+        searchTerm:
+          minLength: 1
+          type: string
+          description: The search term.
+          example: The Green
+      additionalProperties: false
+    UpdateProfileRequest:
+      required:
+        - emailAddress
+        - fullName
+      type: object
+      properties:
+        fullName:
+          minLength: 1
+          type: string
+          description: The first and last name.
+          example: John Doe
+        emailAddress:
+          minLength: 1
+          type: string
+          description: The email address.
+          format: email
+          example: john@email.com
+      additionalProperties: false
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://vinarah.eu.auth0.com/authorize?audience=api://my-library.co.za
+          scopes:
+            openid: Open Id
+security:
+  - oauth2:
+      - openid
