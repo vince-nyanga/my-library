@@ -1,6 +1,30 @@
 # My Library
 
-An API for managing a library see the [documentation](/docs/openapi.md) for more information on the functionality it provides.
+An API for managing a library. It provides the following functionality:
+
+- **Books**
+
+  - Add books (for users with the right permissions).
+  - List books.
+  - Search for books by title.
+  - Borrow books.
+  - Return books.
+  - Reserve a book for 24 hours. If user doesn't borrow the book within the time, the reservation will automatically expire.
+  - Cancel reservation
+  - List borrowed books.
+  - List reserved books.
+
+Check out the [documentation](/docs/openapi.md) for more information on the functionality it provides.
+
+- **Profile**
+
+  - Add/update logged in user's profile.
+  - Get logged in user's profile.
+
+- **Notifications**
+  - List all unread notifications.
+  - Mark a notification as read.
+  - Mark all notifications as read.
 
 ## Running The Project
 
