@@ -14,7 +14,7 @@ An API for managing a library. It provides the following functionality:
   - List borrowed books.
   - List reserved books.
 
-Check out the [documentation](/docs/openapi.md) for more information on the functionality it provides.
+Check out the [documentation](https://github.com/vince-nyanga/my-library/wiki/API-documentation) for more information on the functionality it provides.
 
 - **Profile**
 
