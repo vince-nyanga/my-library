@@ -38,7 +38,7 @@ internal sealed class SqlBookRepository : IBookRepository
         return await _context.Books
             .Include(b => b.BorrowedCopies.Where(c => !c.IsReturned))
             .Include(b => b.ReservedCopies)
-            .Where(b => b.ReservedCopies.Select(c => c.ExpiryDate < DateTime.UtcNow).Any())
+            .Where(b => b.ReservedCopies.Any(c => c.ExpiryDate <= DateTime.UtcNow))
             .ToListAsync();
     }
 
