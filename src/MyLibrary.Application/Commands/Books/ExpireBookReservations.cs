@@ -18,7 +18,7 @@ internal sealed class ExpireBookReservationsHandler : ICommandHandler<ExpireBook
         
         foreach (var book in books)
         {
-            book.ExpireAll();
+            book.ClearAllExpiredReservations();
         }
 
         await _bookRepository.SaveManyAsync(books);

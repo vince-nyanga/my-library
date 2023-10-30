@@ -50,7 +50,7 @@ internal sealed class Book : AggregateRoot<BookId>
         _reservedCopies.Add(reservation);
         EnsureStockBalances();
 
-        AddEvent(new BookReservationMade(Title,customerId));
+        AddEvent(new BookReservationMade(Title,customerId, reservation.ExpiryDate));
     }
 
     public void ExpireReservation(CustomerId customerId)
@@ -99,7 +99,7 @@ internal sealed class Book : AggregateRoot<BookId>
         AddEvent(new BookCopyReturned(Id, Title, copy.CustomerId));
     }
     
-    public void ExpireAll()
+    public void ClearAllExpiredReservations()
     {
         var customerIds = _reservedCopies.Where(e => e.ExpiryDate <= DateTimeOffset.UtcNow)
             .Select(e => new CustomerId(e.CustomerId)).ToList();

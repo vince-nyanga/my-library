@@ -46,6 +46,10 @@ The project uses Auth0 for authentication and authorization so you will need to 
 
 - Add a permission `'add:books'` to you API on Auth0. This permission allows a user to add books to the catalog. Assign it to one of your users so you may be able to add new books.
 
+### Update Database Connection String
+
+If you are not running on Docker you need to update the Database connection string in the `appsettings.json` file.
+
 ## Run Application
 
 - If you're running locally (not on Docker), ensure you have PostgresSQL database installed and running on your computer, then simply run it like you would any other .NET application. If you are using Docker, run the following commands:
@@ -71,7 +75,7 @@ The system is built using a combination of Clean Architecture, Command Query Res
 
 Here's the breakdown of the projects in the solution:
 
-1. **MyLibrary.Domain**: This is the innermost layer in our project. It contains our entities as well as domain events. There are two aggregate roots (`Book` and `Customer`). Most, if not all of the business logic is handled in this project.
+1. **MyLibrary.Domain**: This is the innermost layer in our project. It contains our entities as well as domain events. Most, if not all of the business logic is handled in this project.
 2. **MyLibrary.Application**: This is where the application services live. It contains commands (for CQRS) and their handlers, abstractions for command and event dispatchers, repository interfaces, as well as generic exceptions that will be surfaced to the API. I decided not the surface exceptions thrown in the domain, or any other domain class bar a few such as `IDomainEvent` to the API. The application layer catches all the domain exceptions and throws a more generic exception that the API will then convert into a `ProblemDetails` to be returned to the user.
 3. **MyLibrary.Query**: This project is on the same level as `MyLibrary.Application` but handles the query side of the CQRS. As you can see from the image above, it does not depend on the domain at all. Instead, it defines its own read models that sort of match the domain models. It also contains queries and their handlers, as well as interfaces for the query services.
 4. **MyLibrary.Infrastructure**: This is where the infrastructure is defined. It contains the two EF Core database context, one for writing -- used in `MyLibrary.Application` and one for reading (querying), used by in `MyLibrary.Query`. All the interfaces defined in the deeper layers are defined in this project.

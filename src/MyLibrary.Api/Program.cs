@@ -52,7 +52,7 @@ app.UseEndpoints(options => options.MapControllers().RequireAuthorization());
 app.Services.UseScheduler(scheduler =>
 {
     scheduler.Schedule<ExpireBookReservationsJob>()
-        .EveryFifteenMinutes(); // this will do for now...
+        .EveryThirtyMinutes(); // this will do for now...
 });
 
 app.Run();

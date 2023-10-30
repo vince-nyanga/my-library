@@ -54,16 +54,4 @@ internal sealed class WriteDbContext : DbContext
             aggregateRoot.ClearEvents();
         }
     }
-
-    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
-    {
-        var domainEventEntities = ChangeTracker.Entries<IAggregateRoot>()
-            .Select(entityEntry => entityEntry.Entity)
-            .Where(aggregateRoot => aggregateRoot.Events.Any())
-            .ToArray();
-        
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        
-        
-    }
 }
